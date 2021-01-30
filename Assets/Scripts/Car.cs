@@ -40,8 +40,6 @@ public class Car : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // transform.Translate(Vector3.forward * Time.deltaTime);
-
         leftSensorLineRenderer.SetPosition(0, new Vector3(0, 0.5f, 0));
         leftSensorLineRenderer.SetPosition(1, new Vector3(0, 0.5f, 3.5f));
         leftSensorLineRenderer.transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y - 45, 0);
@@ -52,12 +50,6 @@ public class Car : MonoBehaviour
         rightSensorLineRenderer.SetPosition(0, new Vector3(0, 0.5f, 0));
         rightSensorLineRenderer.SetPosition(1, new Vector3(0, 0.5f, 3.5f));
         rightSensorLineRenderer.transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + 45, 0);
-
-        // Debug.Log(leftSensorLineRenderer.transform.TransformPoint( leftSensorLineRenderer.GetPosition(1)));
-
-        // Debug.Log(leftSensorLineRenderer.GetPosition(0));
-        // Debug.Log(new Vector3(0, 0.5f, 3.5f).);
-        // Debug.Log(leftSensorLineRenderer.localToWorldMatrix);
     }
 
     void FixedUpdate()
@@ -72,38 +64,41 @@ public class Car : MonoBehaviour
 
         {
             RaycastHit hit;
-            // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(raySPosition, leftSensorPointDirection, out hit, 3.5f, Physics.DefaultRaycastLayers))
             {
-                Debug.DrawRay(raySPosition, leftSensorPointDirection * hit.distance, Color.yellow);
+                leftSensorLineRenderer.startColor = Color.red;
+                leftSensorLineRenderer.endColor = Color.red;
             }
             else
             {
-                Debug.DrawRay(raySPosition, leftSensorPointDirection * 3.5f, Color.white);
+                leftSensorLineRenderer.startColor = Color.green;
+                leftSensorLineRenderer.endColor = Color.green;
             }
         }
         {
             RaycastHit hit;
-            // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(raySPosition, middleSensorPointDirection, out hit, 3.5f, Physics.DefaultRaycastLayers))
             {
-                Debug.DrawRay(raySPosition, middleSensorPointDirection * hit.distance, Color.yellow);
+                middleSensorLineRenderer.startColor = Color.red;
+                middleSensorLineRenderer.endColor = Color.red;
             }
             else
             {
-                Debug.DrawRay(raySPosition, middleSensorPointDirection * 3.5f, Color.white);
+                middleSensorLineRenderer.startColor = Color.green;
+                middleSensorLineRenderer.endColor = Color.green;
             }
         }
         {
             RaycastHit hit;
-            // Does the ray intersect any objects excluding the player layer
             if (Physics.Raycast(raySPosition, rightSensorPointDirection, out hit, 3.5f, Physics.DefaultRaycastLayers))
             {
-                Debug.DrawRay(raySPosition, rightSensorPointDirection * hit.distance, Color.yellow);
+                rightSensorLineRenderer.startColor = Color.red;
+                rightSensorLineRenderer.endColor = Color.red;
             }
             else
             {
-                Debug.DrawRay(raySPosition, rightSensorPointDirection * 3.5f, Color.white);
+                rightSensorLineRenderer.startColor = Color.green;
+                rightSensorLineRenderer.endColor = Color.green;
             }
         }
     }
