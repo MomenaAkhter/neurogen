@@ -23,48 +23,50 @@ public class Car : MonoBehaviour
         leftSensorLineRenderer.useWorldSpace = false;
         leftSensorLineRenderer.startColor = Color.green;
         leftSensorLineRenderer.endColor = Color.green;
+        leftSensorLineRenderer.SetPosition(0, Vector3.zero);
+        leftSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
 
         middleSensorLineRenderer = middleSensor.GetComponent<LineRenderer>();
         middleSensorLineRenderer.transform.position += new Vector3(0, 0, extents.z);
         middleSensorLineRenderer.useWorldSpace = false;
         middleSensorLineRenderer.startColor = Color.green;
         middleSensorLineRenderer.endColor = Color.green;
+        middleSensorLineRenderer.SetPosition(0, Vector3.zero);
+        middleSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
 
         rightSensorLineRenderer = rightSensor.GetComponent<LineRenderer>();
         rightSensorLineRenderer.transform.position += new Vector3(0, 0, extents.z);
         rightSensorLineRenderer.useWorldSpace = false;
         rightSensorLineRenderer.startColor = Color.green;
         rightSensorLineRenderer.endColor = Color.green;
+        rightSensorLineRenderer.SetPosition(0, Vector3.zero);
+        rightSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        leftSensorLineRenderer.SetPosition(0, new Vector3(0, 0.5f, 0));
-        leftSensorLineRenderer.SetPosition(1, new Vector3(0, 0.5f, 3.5f));
-        leftSensorLineRenderer.transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y - 45, 0);
-
-        middleSensorLineRenderer.SetPosition(0, new Vector3(0, 0.5f, 0));
-        middleSensorLineRenderer.SetPosition(1, new Vector3(0, 0.5f, 3.5f));
-
-        rightSensorLineRenderer.SetPosition(0, new Vector3(0, 0.5f, 0));
-        rightSensorLineRenderer.SetPosition(1, new Vector3(0, 0.5f, 3.5f));
-        rightSensorLineRenderer.transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + 45, 0);
+        leftSensorLineRenderer.SetPosition(1, new Vector3(-2.7f, 0, 3f));
+        middleSensorLineRenderer.SetPosition(1, new Vector3(0, 0, 3.5f));
+        rightSensorLineRenderer.SetPosition(1, new Vector3(2.7f, 0, 3f));
     }
 
     void FixedUpdate()
     {
         var raySPosition = middleSensorLineRenderer.transform.TransformPoint(middleSensorLineRenderer.GetPosition(0));
 
-        var leftSensorPointDirection = leftSensorLineRenderer.transform.TransformDirection(leftSensorLineRenderer.GetPosition(1) - new Vector3(0, 0.5f, 0)).normalized;
+        var leftSensorDirection = leftSensorLineRenderer.transform.TransformDirection(leftSensorLineRenderer.GetPosition(1));
+        var leftSensorMagnitude = leftSensorDirection.magnitude;
 
-        var middleSensorPointDirection = middleSensorLineRenderer.transform.TransformDirection(middleSensorLineRenderer.GetPosition(1) - new Vector3(0, 0.5f, 0)).normalized;
+        var middleSensorDirection = middleSensorLineRenderer.transform.TransformDirection(middleSensorLineRenderer.GetPosition(1));
+        var middleSensorMagnitude = middleSensorDirection.magnitude;
 
-        var rightSensorPointDirection = rightSensorLineRenderer.transform.TransformDirection(rightSensorLineRenderer.GetPosition(1) - new Vector3(0, 0.5f, 0)).normalized;
+        var rightSensorDirection = rightSensorLineRenderer.transform.TransformDirection(rightSensorLineRenderer.GetPosition(1));
+        var rightSensorMagnitude = rightSensorDirection.magnitude;
 
         {
             RaycastHit hit;
-            if (Physics.Raycast(raySPosition, leftSensorPointDirection, out hit, 3.5f, Physics.DefaultRaycastLayers))
+            if (Physics.Raycast(raySPosition, leftSensorDirection.normalized, out hit, leftSensorMagnitude, Physics.DefaultRaycastLayers))
             {
                 leftSensorLineRenderer.startColor = Color.red;
                 leftSensorLineRenderer.endColor = Color.red;
@@ -77,7 +79,7 @@ public class Car : MonoBehaviour
         }
         {
             RaycastHit hit;
-            if (Physics.Raycast(raySPosition, middleSensorPointDirection, out hit, 3.5f, Physics.DefaultRaycastLayers))
+            if (Physics.Raycast(raySPosition, middleSensorDirection.normalized, out hit, middleSensorMagnitude, Physics.DefaultRaycastLayers))
             {
                 middleSensorLineRenderer.startColor = Color.red;
                 middleSensorLineRenderer.endColor = Color.red;
@@ -90,7 +92,7 @@ public class Car : MonoBehaviour
         }
         {
             RaycastHit hit;
-            if (Physics.Raycast(raySPosition, rightSensorPointDirection, out hit, 3.5f, Physics.DefaultRaycastLayers))
+            if (Physics.Raycast(raySPosition, rightSensorDirection.normalized, out hit, rightSensorMagnitude, Physics.DefaultRaycastLayers))
             {
                 rightSensorLineRenderer.startColor = Color.red;
                 rightSensorLineRenderer.endColor = Color.red;
