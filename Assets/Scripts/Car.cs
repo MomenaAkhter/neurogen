@@ -7,19 +7,22 @@ namespace NeuroGen
         public GameObject leftSensor;
         public GameObject middleSensor;
         public GameObject rightSensor;
-        private bool showSensors;
-        private bool dead;
+        private bool showSensors = true;
+        private bool dead = false;
         private LineRenderer leftSensorLineRenderer;
         private LineRenderer middleSensorLineRenderer;
         private LineRenderer rightSensorLineRenderer;
-        private Vector3 sensors;
+        private Vector3 sensors = Vector3.zero;
+        public WheelCollider[] wheelColliders;
+        public Transform[] wheelTransforms;
+        public float maxSteeringAngle = 30f;
+        public float motorForce = 1100f;
+        public float brakeForce = 3000f;
+        public bool humanControlled = false;
 
         // Start is called before the first frame update
         void Start()
         {
-            dead = false;
-            showSensors = true;
-            sensors = Vector3.zero;
             var extents = transform.GetChild(0).gameObject.GetComponent<Renderer>().bounds.extents;
 
             if (showSensors)
@@ -112,6 +115,37 @@ namespace NeuroGen
                     rightSensorLineRenderer.startColor = Color.green;
                     rightSensorLineRenderer.endColor = Color.green;
                     sensors[2] = 0;
+                }
+            }
+
+            if (humanControlled)
+            {
+                // Input
+                var horizontalInput = Input.GetAxis("Horizontal");
+                var verticalInput = Input.GetAxis("Vertical");
+                var isBraking = Input.GetKey(KeyCode.Space);
+
+                // Motor
+                for (int i = 0; i < 2; i++)
+                    wheelColliders[i].motorTorque = verticalInput * motorForce;
+
+                // Braking
+                foreach (var wheelCollider in wheelColliders)
+                    wheelCollider.brakeTorque = isBraking ? brakeForce : 0f;
+
+                // Steering
+                var steerAngle = maxSteeringAngle * horizontalInput;
+                wheelColliders[0].steerAngle = steerAngle;
+                wheelColliders[1].steerAngle = steerAngle;
+
+                // Wheel Poses
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector3 position;
+                    Quaternion rotation;
+                    wheelColliders[i].GetWorldPose(out position, out rotation);
+                    wheelTransforms[i].rotation = rotation;
+                    wheelTransforms[i].position = position;
                 }
             }
         }
