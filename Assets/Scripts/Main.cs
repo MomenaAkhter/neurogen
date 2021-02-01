@@ -1,4 +1,5 @@
 using UnityEngine;
+using SharpNeat.Genomes.Neat;
 
 namespace NeuroGen
 {
@@ -17,7 +18,7 @@ namespace NeuroGen
             for (int i = 0; i < count; i++)
                 cars[i] = Instantiate<Car>(car, startPosition, Quaternion.identity);
 
-            cars[0].humanControlled = true;
+            // cars[0].humanControlled = true;
         }
 
         void OnDrawGizmos()

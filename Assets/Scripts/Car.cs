@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using SharpNeat.Phenomes;
 
 namespace NeuroGen
 {
-    public class Car : MonoBehaviour
+    public class Car : UnitController
     {
         public GameObject leftSensor;
         public GameObject middleSensor;
@@ -19,6 +20,8 @@ namespace NeuroGen
         public float motorForce = 1100f;
         public float brakeForce = 3000f;
         public bool humanControlled = false;
+        bool IsRunning;
+        IBlackBox box;
 
         // Start is called before the first frame update
         void Start()
@@ -53,12 +56,6 @@ namespace NeuroGen
                 rightSensorLineRenderer.SetPosition(1, new Vector3(2.7f, 0, 3f));
                 rightSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         void FixedUpdate()
@@ -148,6 +145,18 @@ namespace NeuroGen
                     wheelTransforms[i].position = position;
                 }
             }
+            else if (IsRunning)
+            {
+                ISignalArray input = box.InputSignalArray;
+
+                for (int i = 0; i < 3; i++)
+                    input[i] = sensors[i];
+
+                box.Activate();
+
+                ISignalArray output = box.OutputSignalArray;
+                Debug.Log(output);
+            }
         }
 
         void OnCollisionEnter(Collision collision)
@@ -160,6 +169,22 @@ namespace NeuroGen
             transform.position = Main.startPosition;
             transform.rotation = Quaternion.identity;
             dead = false;
+        }
+
+        override public void Activate(IBlackBox box)
+        {
+            this.box = box;
+            IsRunning = true;
+        }
+
+        override public void Stop()
+        {
+            IsRunning = false;
+        }
+
+        public override float GetFitness()
+        {
+            return 1.1f;
         }
     }
 }
