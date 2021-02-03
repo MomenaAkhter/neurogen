@@ -1169,7 +1169,7 @@ MonoBehaviour:
   - {fileID: 6388864814578714171}
   - {fileID: 6388864812698101611}
   maxSteeringAngle: 30
-  motorForce: 700
+  motorForce: 300
   brakeForce: 3000
   humanControlled: 0
 --- !u!1 &6388864814578714168

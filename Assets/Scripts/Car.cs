@@ -65,61 +65,58 @@ namespace NeuroGen
 
         void FixedUpdate()
         {
-            if (showSensors)
+            // Sensors
+            sensors = Vector3.zero;
+
+            var raySPosition = middleSensorLineRenderer.transform.TransformPoint(middleSensorLineRenderer.GetPosition(0));
+
+            var leftSensorDirection = leftSensorLineRenderer.transform.TransformDirection(leftSensorLineRenderer.GetPosition(1));
+            var leftSensorMagnitude = leftSensorDirection.magnitude;
+
+            var middleSensorDirection = middleSensorLineRenderer.transform.TransformDirection(middleSensorLineRenderer.GetPosition(1));
+            var middleSensorMagnitude = middleSensorDirection.magnitude;
+
+            var rightSensorDirection = rightSensorLineRenderer.transform.TransformDirection(rightSensorLineRenderer.GetPosition(1));
+            var rightSensorMagnitude = rightSensorDirection.magnitude;
+
+            RaycastHit hit;
+            if (Physics.Raycast(raySPosition, leftSensorDirection.normalized, out hit, leftSensorMagnitude, Physics.DefaultRaycastLayers))
             {
-                var raySPosition = middleSensorLineRenderer.transform.TransformPoint(middleSensorLineRenderer.GetPosition(0));
-
-                var leftSensorDirection = leftSensorLineRenderer.transform.TransformDirection(leftSensorLineRenderer.GetPosition(1));
-                var leftSensorMagnitude = leftSensorDirection.magnitude;
-
-                var middleSensorDirection = middleSensorLineRenderer.transform.TransformDirection(middleSensorLineRenderer.GetPosition(1));
-                var middleSensorMagnitude = middleSensorDirection.magnitude;
-
-                var rightSensorDirection = rightSensorLineRenderer.transform.TransformDirection(rightSensorLineRenderer.GetPosition(1));
-                var rightSensorMagnitude = rightSensorDirection.magnitude;
-
-
-                RaycastHit hit;
-                if (Physics.Raycast(raySPosition, leftSensorDirection.normalized, out hit, leftSensorMagnitude, Physics.DefaultRaycastLayers))
-                {
-                    leftSensorLineRenderer.startColor = Color.red;
-                    leftSensorLineRenderer.endColor = Color.red;
-                    sensors[0] = leftSensorMagnitude - hit.distance;
-                }
-                else
-                {
-                    leftSensorLineRenderer.startColor = Color.green;
-                    leftSensorLineRenderer.endColor = Color.green;
-                    sensors[0] = 0;
-                }
-
-                if (Physics.Raycast(raySPosition, middleSensorDirection.normalized, out hit, middleSensorMagnitude, Physics.DefaultRaycastLayers))
-                {
-                    middleSensorLineRenderer.startColor = Color.red;
-                    middleSensorLineRenderer.endColor = Color.red;
-                    sensors[1] = middleSensorMagnitude - hit.distance;
-                }
-                else
-                {
-                    middleSensorLineRenderer.startColor = Color.green;
-                    middleSensorLineRenderer.endColor = Color.green;
-                    sensors[1] = 0;
-                }
-
-                if (Physics.Raycast(raySPosition, rightSensorDirection.normalized, out hit, rightSensorMagnitude, Physics.DefaultRaycastLayers))
-                {
-                    rightSensorLineRenderer.startColor = Color.red;
-                    rightSensorLineRenderer.endColor = Color.red;
-                    sensors[2] = rightSensorMagnitude - hit.distance;
-                }
-                else
-                {
-                    rightSensorLineRenderer.startColor = Color.green;
-                    rightSensorLineRenderer.endColor = Color.green;
-                    sensors[2] = 0;
-                }
+                leftSensorLineRenderer.startColor = Color.red;
+                leftSensorLineRenderer.endColor = Color.red;
+                sensors[0] = leftSensorMagnitude - hit.distance;
+            }
+            else
+            {
+                leftSensorLineRenderer.startColor = Color.green;
+                leftSensorLineRenderer.endColor = Color.green;
             }
 
+            if (Physics.Raycast(raySPosition, middleSensorDirection.normalized, out hit, middleSensorMagnitude, Physics.DefaultRaycastLayers))
+            {
+                middleSensorLineRenderer.startColor = Color.red;
+                middleSensorLineRenderer.endColor = Color.red;
+                sensors[1] = middleSensorMagnitude - hit.distance;
+            }
+            else
+            {
+                middleSensorLineRenderer.startColor = Color.green;
+                middleSensorLineRenderer.endColor = Color.green;
+            }
+
+            if (Physics.Raycast(raySPosition, rightSensorDirection.normalized, out hit, rightSensorMagnitude, Physics.DefaultRaycastLayers))
+            {
+                rightSensorLineRenderer.startColor = Color.red;
+                rightSensorLineRenderer.endColor = Color.red;
+                sensors[2] = rightSensorMagnitude - hit.distance;
+            }
+            else
+            {
+                rightSensorLineRenderer.startColor = Color.green;
+                rightSensorLineRenderer.endColor = Color.green;
+            }
+
+            // Controls
             float horizontalControl = 0, verticalControl = 0;
             bool isBraking = false;
 
@@ -161,10 +158,13 @@ namespace NeuroGen
                 lastPosition = transform.position;
             }
 
+            var velocity = GetComponent<Rigidbody>().velocity.sqrMagnitude;
+
+            // Physics
             for (int i = 0; i < 2; i++)
             {
                 // Motor
-                wheelColliders[i].motorTorque = verticalControl * motorForce;
+                wheelColliders[i].motorTorque = velocity <= 20 ? verticalControl * motorForce : 0;
 
                 // Steering
                 wheelColliders[i].steerAngle = maxSteeringAngle * horizontalControl;

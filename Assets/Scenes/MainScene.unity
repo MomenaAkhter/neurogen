@@ -609,6 +609,7 @@ MonoBehaviour:
   TrialDuration: 20
   StoppingFitness: 100
   Unit: {fileID: 6388864814560160043, guid: 56b4c177a3fd142e9946fd7ad64bf59c, type: 3}
+  evoSpeed: 10
 --- !u!4 &2082197341
 Transform:
   m_ObjectHideFlags: 0

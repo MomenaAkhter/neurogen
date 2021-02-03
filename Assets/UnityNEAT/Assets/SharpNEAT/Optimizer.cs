@@ -33,6 +33,7 @@ public class Optimizer : MonoBehaviour
 
     private uint Generation;
     private double Fitness;
+    public float evoSpeed = 25;
 
     // Use this for initialization
     void Start()
@@ -69,10 +70,7 @@ public class Optimizer : MonoBehaviour
             frames = 0;
             //   print("FPS: " + fps);
             if (fps < 10)
-            {
-                Time.timeScale = Time.timeScale - 1;
-                print("Lowering time scale to " + Time.timeScale);
-            }
+                print("Lowering time scale to " + --Time.timeScale);
         }
     }
 
@@ -86,8 +84,6 @@ public class Optimizer : MonoBehaviour
 
         _ea.UpdateEvent += new EventHandler(ea_UpdateEvent);
         _ea.PausedEvent += new EventHandler(ea_PauseEvent);
-
-        var evoSpeed = 25;
 
         //   Time.fixedDeltaTime = 0.045f;
         Time.timeScale = evoSpeed;
@@ -209,27 +205,28 @@ public class Optimizer : MonoBehaviour
     public float GetFitness(IBlackBox box)
     {
         if (ControllerMap.ContainsKey(box))
-        {
             return ControllerMap[box].GetFitness();
-        }
+
         return 0;
     }
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 100, 40), "Start EA"))
-        {
+        if (GUI.Button(new Rect(10, 10, 100, 40), "Start"))
             StartEA();
-        }
-        if (GUI.Button(new Rect(10, 60, 100, 40), "Stop EA"))
-        {
-            StopEA();
-        }
-        if (GUI.Button(new Rect(10, 110, 100, 40), "Run best"))
-        {
-            RunBest();
-        }
 
-        GUI.Button(new Rect(10, Screen.height - 70, 100, 60), string.Format("Generation: {0}\nFitness: {1:0.00}", Generation, Fitness));
+        if (GUI.Button(new Rect(10, 60, 100, 40), "Stop"))
+            StopEA();
+
+        if (GUI.Button(new Rect(10, 110, 100, 40), "Run best"))
+            RunBest();
+
+        if (GUI.Button(new Rect(10, 160, 100, 40), "Inc. TS"))
+            Time.timeScale++;
+
+        if (GUI.Button(new Rect(10, 210, 100, 40), "Dec. TS"))
+            Time.timeScale--;
+
+        GUI.Button(new Rect(10, Screen.height - 70, 130, 60), string.Format("Generation: {0}\nFitness: {1:0.00}\nTime Scale: {2:0.0}", Generation, Fitness, Time.timeScale));
     }
 }
