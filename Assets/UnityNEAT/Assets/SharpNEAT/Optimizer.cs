@@ -68,7 +68,17 @@ public class Optimizer : MonoBehaviour
             timeLeft = updateInterval;
             accum = 0.0f;
             frames = 0;
-            //   print("FPS: " + fps);
+
+            // Debug.Log(string.Format("Count: {0, 0}", ControllerMap.Count));
+            int counter = 0;
+            foreach (var unit in ControllerMap)
+                if (unit.Value.IsRunning)
+                    counter++;
+
+            // if (counter == 0)
+            //     foreach (var entry in ControllerMap)
+            //         StopEvaluation(entry.Key);
+
             if (fps < 10)
                 print("Lowering time scale to " + --Time.timeScale);
         }
@@ -77,7 +87,7 @@ public class Optimizer : MonoBehaviour
     public void StartEA()
     {
         Utility.DebugLog = true;
-        Utility.Log("Starting PhotoTaxis experiment");
+        Utility.Log("Starting experiment");
         // print("Loading: " + popFileLoadPath);
         _ea = experiment.CreateEvolutionAlgorithm(popFileSavePath);
         startTime = DateTime.Now;
@@ -99,9 +109,7 @@ public class Optimizer : MonoBehaviour
         Fitness = _ea.Statistics._maxFitness;
         Generation = _ea.CurrentGeneration;
 
-
         //    Utility.Log(string.Format("Moving average: {0}, N: {1}", _ea.Statistics._bestFitnessMA.Mean, _ea.Statistics._bestFitnessMA.Length));
-
 
     }
 
@@ -134,19 +142,14 @@ public class Optimizer : MonoBehaviour
 
         System.IO.StreamReader stream = new System.IO.StreamReader(popFileSavePath);
 
-
-
         EARunning = false;
-
     }
 
     public void StopEA()
     {
 
         if (_ea != null && _ea.RunState == SharpNeat.Core.RunState.Running)
-        {
             _ea.Stop();
-        }
     }
 
     public void Evaluate(IBlackBox box)
@@ -205,7 +208,11 @@ public class Optimizer : MonoBehaviour
     public float GetFitness(IBlackBox box)
     {
         if (ControllerMap.ContainsKey(box))
-            return ControllerMap[box].GetFitness();
+        {
+            var fitness = ControllerMap[box].GetFitness();
+            ControllerMap.Remove(box);
+            return fitness;
+        }
 
         return 0;
     }

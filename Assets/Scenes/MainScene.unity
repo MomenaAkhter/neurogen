@@ -258,7 +258,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8d722a64b31604e748ff96ca0f6a3a03,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d722a64b31604e748ff96ca0f6a3a03,
         type: 3}
@@ -268,12 +268,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8d722a64b31604e748ff96ca0f6a3a03,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d722a64b31604e748ff96ca0f6a3a03,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d722a64b31604e748ff96ca0f6a3a03,
         type: 3}
@@ -283,7 +283,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8d722a64b31604e748ff96ca0f6a3a03,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8d722a64b31604e748ff96ca0f6a3a03,
         type: 3}
@@ -567,13 +567,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794891546}
-  m_LocalRotation: {x: 0, y: 0.34398746, z: 0, w: 0.93897426}
-  m_LocalPosition: {x: 23.4, y: 10.9, z: -24.88}
+  m_LocalRotation: {x: 0, y: 0.9998157, z: 0, w: 0.019197455}
+  m_LocalPosition: {x: -9.16, y: 10.9, z: -22.7}
   m_LocalScale: {x: 12.01, y: 2.4, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 40.24, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 177.8, z: 0}
 --- !u!1 &2082197339
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,10 +606,10 @@ MonoBehaviour:
   NUM_INPUTS: 3
   NUM_OUTPUTS: 3
   Trials: 1
-  TrialDuration: 20
+  TrialDuration: 200
   StoppingFitness: 100
   Unit: {fileID: 6388864814560160043, guid: 56b4c177a3fd142e9946fd7ad64bf59c, type: 3}
-  evoSpeed: 10
+  evoSpeed: 5
 --- !u!4 &2082197341
 Transform:
   m_ObjectHideFlags: 0
