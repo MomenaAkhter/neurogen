@@ -22,10 +22,15 @@ namespace NeuroGen
         public bool humanControlled = false;
         bool IsRunning;
         IBlackBox box;
+        private Vector3 lastPosition;
+        private float distanceTravelled;
 
         // Start is called before the first frame update
         void Start()
         {
+            lastPosition = transform.position;
+            distanceTravelled = 0;
+
             var extents = transform.GetChild(0).gameObject.GetComponent<Renderer>().bounds.extents;
 
             if (showSensors)
@@ -115,35 +120,14 @@ namespace NeuroGen
                 }
             }
 
+            float horizontalControl = 0, verticalControl = 0;
+            bool isBraking = false;
+
             if (humanControlled)
             {
-                // Input
-                var horizontalInput = Input.GetAxis("Horizontal");
-                var verticalInput = Input.GetAxis("Vertical");
-                var isBraking = Input.GetKey(KeyCode.Space);
-
-                // Motor
-                for (int i = 0; i < 2; i++)
-                    wheelColliders[i].motorTorque = verticalInput * motorForce;
-
-                // Braking
-                foreach (var wheelCollider in wheelColliders)
-                    wheelCollider.brakeTorque = isBraking ? brakeForce : 0f;
-
-                // Steering
-                var steerAngle = maxSteeringAngle * horizontalInput;
-                wheelColliders[0].steerAngle = steerAngle;
-                wheelColliders[1].steerAngle = steerAngle;
-
-                // Wheel Poses
-                for (int i = 0; i < 4; i++)
-                {
-                    Vector3 position;
-                    Quaternion rotation;
-                    wheelColliders[i].GetWorldPose(out position, out rotation);
-                    wheelTransforms[i].rotation = rotation;
-                    wheelTransforms[i].position = position;
-                }
+                horizontalControl = Input.GetAxis("Horizontal");
+                verticalControl = Input.GetAxis("Vertical");
+                isBraking = Input.GetKey(KeyCode.Space);
             }
             else if (IsRunning)
             {
@@ -155,13 +139,60 @@ namespace NeuroGen
                 box.Activate();
 
                 ISignalArray output = box.OutputSignalArray;
-                Debug.Log(output);
+
+                if (output[0] <= 0.33)
+                    horizontalControl = 0;
+                else if (output[0] > 0.33 && output[0] <= .66)
+                    horizontalControl = 1;
+                else
+                    horizontalControl = -1;
+
+                if (output[1] <= 0.33)
+                    verticalControl = 0;
+                else if (output[1] > 0.33 && output[0] <= .66)
+                    verticalControl = 1;
+                else
+                    verticalControl = -1;
+
+                isBraking = output[2] > 0.5 ? true : false;
+
+                // Accumulate distance
+                distanceTravelled += Vector3.Distance(transform.position, lastPosition);
+                lastPosition = transform.position;
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                // Motor
+                wheelColliders[i].motorTorque = verticalControl * motorForce;
+
+                // Steering
+                wheelColliders[i].steerAngle = maxSteeringAngle * horizontalControl;
+            }
+
+            // Braking
+            foreach (var wheelCollider in wheelColliders)
+                wheelCollider.brakeTorque = isBraking ? brakeForce : 0f;
+
+            // Wheel Poses
+            for (int i = 0; i < 4; i++)
+            {
+                Vector3 position;
+                Quaternion rotation;
+
+                wheelColliders[i].GetWorldPose(out position, out rotation);
+                wheelTransforms[i].rotation = rotation;
+                wheelTransforms[i].position = position;
             }
         }
 
         void OnCollisionEnter(Collision collision)
         {
-            // Debug.Log(collision.gameObject.name);
+            if (collision.gameObject.name == "Stopper" || collision.gameObject.name == "Track")
+            {
+                Stop();
+                dead = true;
+            }
         }
 
         void Reset()
@@ -173,6 +204,9 @@ namespace NeuroGen
 
         override public void Activate(IBlackBox box)
         {
+            lastPosition = transform.position;
+            distanceTravelled = 0;
+
             this.box = box;
             IsRunning = true;
         }
@@ -184,7 +218,7 @@ namespace NeuroGen
 
         public override float GetFitness()
         {
-            return 1.1f;
+            return distanceTravelled;
         }
     }
 }
