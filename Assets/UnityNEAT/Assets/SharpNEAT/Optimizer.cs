@@ -14,8 +14,6 @@ public class Optimizer : MonoBehaviour
     public int NUM_OUTPUTS = 2;
 
     public int Trials;
-    public float TrialDuration;
-    public float StoppingFitness;
     bool EARunning;
     string popFileSavePath, champFileSavePath;
 
@@ -24,7 +22,7 @@ public class Optimizer : MonoBehaviour
 
     public GameObject Unit;
 
-    Dictionary<IBlackBox, UnitController> ControllerMap = new Dictionary<IBlackBox, UnitController>();
+    public Dictionary<IBlackBox, UnitController> ControllerMap = new Dictionary<IBlackBox, UnitController>();
     private DateTime startTime;
     private float timeLeft;
     private float accum;
@@ -120,6 +118,7 @@ public class Optimizer : MonoBehaviour
 
         XmlWriterSettings _xwSettings = new XmlWriterSettings();
         _xwSettings.Indent = true;
+
         // Save genomes to xml file.        
         DirectoryInfo dirInf = new DirectoryInfo(Application.persistentDataPath);
         if (!dirInf.Exists)
@@ -131,12 +130,13 @@ public class Optimizer : MonoBehaviour
         {
             experiment.SavePopulation(xw, _ea.GenomeList);
         }
-        // Also save the best genome
 
+        // Also save the best genome
         using (XmlWriter xw = XmlWriter.Create(champFileSavePath, _xwSettings))
         {
             experiment.SavePopulation(xw, new NeatGenome[] { _ea.CurrentChampGenome });
         }
+
         DateTime endTime = DateTime.Now;
         Utility.Log("Total time elapsed: " + (endTime - startTime));
 
@@ -181,10 +181,8 @@ public class Optimizer : MonoBehaviour
         {
             using (XmlReader xr = XmlReader.Create(champFileSavePath))
                 genome = NeatGenomeXmlIO.ReadCompleteGenomeList(xr, false, (NeatGenomeFactory)experiment.CreateGenomeFactory())[0];
-
-
         }
-        catch (Exception e1)
+        catch (Exception)
         {
             // print(champFileLoadPath + " Error loading genome from file!\nLoading aborted.\n"
             //						  + e1.Message + "\nJoe: " + champFileLoadPath);
