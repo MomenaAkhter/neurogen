@@ -55,12 +55,11 @@ namespace SharpNEAT.Core
             Dictionary<TGenome, FitnessInfo[]> fitnessDict = new Dictionary<TGenome, FitnessInfo[]>();
             for (int i = 0; i < _optimizer.Trials; i++)
             {
-                Utility.Log("Iteration " + (i + 1));                
+                // Utility.Log("Iteration " + (i + 1));
                 _phenomeEvaluator.Reset();
                 dict = new Dictionary<TGenome, TPhenome>();
                 foreach (TGenome genome in genomeList)
                 {
-                    
                     TPhenome phenome = _genomeDecoder.Decode(genome);
                     if (null == phenome)
                     {   // Non-viable genome.
@@ -80,13 +79,11 @@ namespace SharpNEAT.Core
                         //    fitnessDict.Add(phenome, new FitnessInfo[_optimizer.Trials]);
                         //}
                         Coroutiner.StartCoroutine(_phenomeEvaluator.Evaluate(phenome));
-
-
                     }
                 }
 
                 yield return new WaitForSeconds(_optimizer.TrialDuration);
-                
+
                 foreach (TGenome genome in dict.Keys)
                 {
                     TPhenome phenome = dict[genome];
@@ -94,7 +91,7 @@ namespace SharpNEAT.Core
                     {
 
                         FitnessInfo fitnessInfo = _phenomeEvaluator.GetLastFitness(phenome);
-                        
+
                         fitnessDict[genome][i] = fitnessInfo;
                     }
                 }
@@ -108,17 +105,17 @@ namespace SharpNEAT.Core
 
                     for (int i = 0; i < _optimizer.Trials; i++)
                     {
-                     
+
                         fitness += fitnessDict[genome][i]._fitness;
-                       
+
                     }
                     var fit = fitness;
                     fitness /= _optimizer.Trials; // Averaged fitness
-                    
+
                     if (fit > _optimizer.StoppingFitness)
                     {
-                      //  Utility.Log("Fitness is " + fit + ", stopping now because stopping fitness is " + _optimizer.StoppingFitness);
-                      //  _phenomeEvaluator.StopConditionSatisfied = true;
+                        //  Utility.Log("Fitness is " + fit + ", stopping now because stopping fitness is " + _optimizer.StoppingFitness);
+                        //  _phenomeEvaluator.StopConditionSatisfied = true;
                     }
                     genome.EvaluationInfo.SetFitness(fitness);
                     genome.EvaluationInfo.AuxFitnessArr = fitnessDict[genome][0]._auxFitnessArr;

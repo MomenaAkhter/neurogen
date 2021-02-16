@@ -50,7 +50,7 @@ public class Optimizer : MonoBehaviour
         champFileSavePath = Application.persistentDataPath + string.Format("/{0}.champ.xml", "car");
         popFileSavePath = Application.persistentDataPath + string.Format("/{0}.pop.xml", "car");
 
-        print(champFileSavePath);
+        // print(champFileSavePath);
     }
 
     // Update is called once per frame
@@ -79,8 +79,8 @@ public class Optimizer : MonoBehaviour
             //     foreach (var entry in ControllerMap)
             //         StopEvaluation(entry.Key);
 
-            if (fps < 10)
-                print("Lowering time scale to " + --Time.timeScale);
+            // if (fps < 10)
+            //     print("Lowering time scale to " + --Time.timeScale);
         }
     }
 

@@ -134,6 +134,7 @@ namespace NeuroGen
 
                     for (int i = 0; i < 3; i++)
                         input[i] = sensors[i];
+                    input[3] = velocity;
 
                     box.Activate();
 
@@ -161,12 +162,9 @@ namespace NeuroGen
                     {
                         idleTime += Time.fixedDeltaTime;
                         if (idleTime > 5)
-                        {
                             Stop();
-                            Debug.Log("Stopped car");
-                        }
                     }
-                    else if (idleTime > 0)
+                    else
                     {
                         idleTime = 0;
                     }
@@ -199,12 +197,10 @@ namespace NeuroGen
             }
         }
 
-        void OnCollisionEnter(Collision collision)
+        void OnTriggerEnter(Collider collider)
         {
-            if (collision.gameObject.name == "Stopper" || collision.gameObject.name == "Track")
-            {
+            if (collider.gameObject.name == "Stopper" || collider.gameObject.name == "Track")
                 Stop();
-            }
         }
 
         override public void Activate(IBlackBox box)
@@ -214,11 +210,13 @@ namespace NeuroGen
 
             this.box = box;
             IsRunning = true;
+            gameObject.SetActive(true);
         }
 
         override public void Stop()
         {
             IsRunning = false;
+            gameObject.SetActive(false);
         }
 
         public override float GetFitness()

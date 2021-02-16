@@ -1,5 +1,4 @@
 using UnityEngine;
-using SharpNeat.Genomes.Neat;
 
 namespace NeuroGen
 {
