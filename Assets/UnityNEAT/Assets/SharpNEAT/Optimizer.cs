@@ -47,40 +47,28 @@ public class Optimizer : MonoBehaviour
 
         champFileSavePath = Application.persistentDataPath + string.Format("/{0}.champ.xml", "car");
         popFileSavePath = Application.persistentDataPath + string.Format("/{0}.pop.xml", "car");
-
-        // print(champFileSavePath);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        //  evaluationStartTime += Time.deltaTime;
+    // void Update()
+    // {
+    //     //  evaluationStartTime += Time.deltaTime;
 
-        timeLeft -= Time.deltaTime;
-        accum += Time.timeScale / Time.deltaTime;
-        ++frames;
+    //     timeLeft -= Time.deltaTime;
+    //     accum += Time.timeScale / Time.deltaTime;
+    //     ++frames;
 
-        if (timeLeft <= 0.0)
-        {
-            var fps = accum / frames;
-            timeLeft = updateInterval;
-            accum = 0.0f;
-            frames = 0;
+    //     if (timeLeft <= 0.0)
+    //     {
+    //         // var fps = accum / frames;
+    //         timeLeft = updateInterval;
+    //         accum = 0.0f;
+    //         frames = 0;
 
-            // Debug.Log(string.Format("Count: {0, 0}", ControllerMap.Count));
-            int counter = 0;
-            foreach (var unit in ControllerMap)
-                if (unit.Value.IsRunning)
-                    counter++;
-
-            // if (counter == 0)
-            //     foreach (var entry in ControllerMap)
-            //         StopEvaluation(entry.Key);
-
-            // if (fps < 10)
-            //     print("Lowering time scale to " + --Time.timeScale);
-        }
-    }
+    //         // if (fps < 10)
+    //         //     print("Lowering time scale to " + --Time.timeScale);
+    //     }
+    // }
 
     public void StartEA()
     {
@@ -108,7 +96,6 @@ public class Optimizer : MonoBehaviour
         Generation = _ea.CurrentGeneration;
 
         //    Utility.Log(string.Format("Moving average: {0}, N: {1}", _ea.Statistics._bestFitnessMA.Mean, _ea.Statistics._bestFitnessMA.Length));
-
     }
 
     void ea_PauseEvent(object sender, EventArgs e)
@@ -145,9 +132,21 @@ public class Optimizer : MonoBehaviour
         EARunning = false;
     }
 
+    // public static void SaveChamp()
+    // {
+    //     var champFileSavePath = Application.persistentDataPath + string.Format("/{0}.champ.xml", "car");
+
+    //     XmlWriterSettings _xwSettings = new XmlWriterSettings();
+    //     _xwSettings.Indent = true;
+
+    //     using (XmlWriter xw = XmlWriter.Create(champFileSavePath, _xwSettings))
+    //     {
+    //         experiment.SavePopulation(xw, new NeatGenome[] { _ea.CurrentChampGenome });
+    //     }
+    // }
+
     public void StopEA()
     {
-
         if (_ea != null && _ea.RunState == SharpNeat.Core.RunState.Running)
             _ea.Stop();
     }
@@ -175,7 +174,6 @@ public class Optimizer : MonoBehaviour
 
         NeatGenome genome = null;
 
-
         // Try to load the genome from the XML document.
         try
         {
@@ -201,6 +199,31 @@ public class Optimizer : MonoBehaviour
         ControllerMap.Add(phenome, controller);
 
         controller.Activate(phenome);
+
+        Coroutiner.StartCoroutine(MonitorBestPhenome(controller));
+    }
+
+    private IEnumerator MonitorBestPhenome(UnitController controller)
+    {
+        int i = 0;
+        while (true)
+        {
+            if (controller.IsRunning)
+            {
+                if (i % 100 == 0)
+                    Debug.Log("Fitness: " + controller.GetFitness());
+            }
+            else
+            {
+                ControllerMap.Clear();
+                Debug.Log("Final fitness: " + controller.GetFitness());
+                break;
+            }
+
+            i++;
+
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     public float GetFitness(IBlackBox box)

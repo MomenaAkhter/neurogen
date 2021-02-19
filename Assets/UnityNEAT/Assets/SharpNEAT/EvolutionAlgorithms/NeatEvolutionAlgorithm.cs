@@ -25,6 +25,7 @@ using SharpNeat.EvolutionAlgorithms.ComplexityRegulation;
 using SharpNeat.SpeciationStrategies;
 using SharpNeat.Utility;
 using System.Collections;
+using UnityEngine;
 
 namespace SharpNeat.EvolutionAlgorithms
 {
@@ -678,8 +679,7 @@ namespace SharpNeat.EvolutionAlgorithms
             double bestFitness = -1.0;
             int bestSpecieIdx = -1;
 
-            int count = _specieList.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < _specieList.Count; i++)
             {
                 // Get the specie's first genome. Genomes are sorted, therefore this is also the fittest 
                 // genome in the specie.
@@ -692,8 +692,12 @@ namespace SharpNeat.EvolutionAlgorithms
                 }
             }
 
+            // Debug.Log("Updated champ! " + bestGenome.Id + " " + bestGenome.EvaluationInfo.Fitness);
+
             _currentBestGenome = bestGenome;
             _bestSpecieIdx = bestSpecieIdx;
+
+            // TODO: Save champ at each update
         }
 
         /// <summary>

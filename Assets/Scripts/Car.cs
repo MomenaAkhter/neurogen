@@ -8,11 +8,15 @@ namespace NeuroGen
         public GameObject leftSensor;
         public GameObject middleSensor;
         public GameObject rightSensor;
+        public GameObject middleLeftSensor;
+        public GameObject middleRightSensor;
         private bool showSensors = true;
         private LineRenderer leftSensorLineRenderer;
         private LineRenderer middleSensorLineRenderer;
         private LineRenderer rightSensorLineRenderer;
-        private Vector3 sensors = Vector3.zero;
+        private LineRenderer middleLeftSensorLineRenderer;
+        private LineRenderer middleRightSensorLineRenderer;
+        private float[] sensors = { 0, 0, 0, 0, 0 };
         public WheelCollider[] wheelColliders;
         public Transform[] wheelTransforms;
         public float maxSteeringAngle = 30f;
@@ -59,6 +63,24 @@ namespace NeuroGen
                 rightSensorLineRenderer.SetPosition(0, Vector3.zero);
                 rightSensorLineRenderer.SetPosition(1, new Vector3(5f, 0, 3f));
                 rightSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
+
+                middleLeftSensorLineRenderer = middleLeftSensor.GetComponent<LineRenderer>();
+                middleLeftSensorLineRenderer.transform.position += new Vector3(-extents.x, 0, 0);
+                middleLeftSensorLineRenderer.useWorldSpace = false;
+                middleLeftSensorLineRenderer.startColor = Color.green;
+                middleLeftSensorLineRenderer.endColor = Color.green;
+                middleLeftSensorLineRenderer.SetPosition(0, Vector3.zero);
+                middleLeftSensorLineRenderer.SetPosition(1, new Vector3(-5f, 0, 0));
+                middleLeftSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
+
+                middleRightSensorLineRenderer = middleRightSensor.GetComponent<LineRenderer>();
+                middleRightSensorLineRenderer.transform.position += new Vector3(extents.x, 0, 0);
+                middleRightSensorLineRenderer.useWorldSpace = false;
+                middleRightSensorLineRenderer.startColor = Color.green;
+                middleRightSensorLineRenderer.endColor = Color.green;
+                middleRightSensorLineRenderer.SetPosition(0, Vector3.zero);
+                middleRightSensorLineRenderer.SetPosition(1, new Vector3(5f, 0, 0));
+                middleRightSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
             }
         }
 
@@ -67,9 +89,12 @@ namespace NeuroGen
             if (humanControlled || IsRunning)
             {
                 // Sensors
-                sensors = Vector3.zero;
+                for (int i = 0; i < 5; i++)
+                    sensors[i] = 0;
 
-                var raySPosition = middleSensorLineRenderer.transform.TransformPoint(middleSensorLineRenderer.GetPosition(0));
+                var frontRaySPosition = middleSensorLineRenderer.transform.TransformPoint(middleSensorLineRenderer.GetPosition(0));
+                var middleLeftRaySPosition = middleLeftSensorLineRenderer.transform.TransformPoint(middleLeftSensorLineRenderer.GetPosition(0));
+                var middleRightRaySPosition = middleRightSensorLineRenderer.transform.TransformPoint(middleRightSensorLineRenderer.GetPosition(0));
 
                 var leftSensorDirection = leftSensorLineRenderer.transform.TransformDirection(leftSensorLineRenderer.GetPosition(1));
                 var leftSensorMagnitude = leftSensorDirection.magnitude;
@@ -80,12 +105,18 @@ namespace NeuroGen
                 var rightSensorDirection = rightSensorLineRenderer.transform.TransformDirection(rightSensorLineRenderer.GetPosition(1));
                 var rightSensorMagnitude = rightSensorDirection.magnitude;
 
+                var middleLeftSensorDirection = middleLeftSensorLineRenderer.transform.TransformDirection(middleLeftSensorLineRenderer.GetPosition(1));
+                var middleLeftSensorMagnitude = middleLeftSensorDirection.magnitude;
+
+                var middleRightSensorDirection = middleRightSensorLineRenderer.transform.TransformDirection(middleRightSensorLineRenderer.GetPosition(1));
+                var middleRightSensorMagnitude = middleRightSensorDirection.magnitude;
+
                 RaycastHit hit;
-                if (Physics.Raycast(raySPosition, leftSensorDirection.normalized, out hit, leftSensorMagnitude, Physics.DefaultRaycastLayers))
+                if (Physics.Raycast(frontRaySPosition, leftSensorDirection.normalized, out hit, leftSensorMagnitude, Physics.DefaultRaycastLayers))
                 {
                     leftSensorLineRenderer.startColor = Color.red;
                     leftSensorLineRenderer.endColor = Color.red;
-                    sensors[0] = leftSensorMagnitude - hit.distance;
+                    sensors[0] = (leftSensorMagnitude - hit.distance) / leftSensorMagnitude;
                 }
                 else
                 {
@@ -93,11 +124,11 @@ namespace NeuroGen
                     leftSensorLineRenderer.endColor = Color.green;
                 }
 
-                if (Physics.Raycast(raySPosition, middleSensorDirection.normalized, out hit, middleSensorMagnitude, Physics.DefaultRaycastLayers))
+                if (Physics.Raycast(frontRaySPosition, middleSensorDirection.normalized, out hit, middleSensorMagnitude, Physics.DefaultRaycastLayers))
                 {
                     middleSensorLineRenderer.startColor = Color.red;
                     middleSensorLineRenderer.endColor = Color.red;
-                    sensors[1] = middleSensorMagnitude - hit.distance;
+                    sensors[1] = (middleSensorMagnitude - hit.distance) / middleSensorMagnitude;
                 }
                 else
                 {
@@ -105,16 +136,40 @@ namespace NeuroGen
                     middleSensorLineRenderer.endColor = Color.green;
                 }
 
-                if (Physics.Raycast(raySPosition, rightSensorDirection.normalized, out hit, rightSensorMagnitude, Physics.DefaultRaycastLayers))
+                if (Physics.Raycast(frontRaySPosition, rightSensorDirection.normalized, out hit, rightSensorMagnitude, Physics.DefaultRaycastLayers))
                 {
                     rightSensorLineRenderer.startColor = Color.red;
                     rightSensorLineRenderer.endColor = Color.red;
-                    sensors[2] = rightSensorMagnitude - hit.distance;
+                    sensors[2] = (rightSensorMagnitude - hit.distance) / rightSensorMagnitude;
                 }
                 else
                 {
                     rightSensorLineRenderer.startColor = Color.green;
                     rightSensorLineRenderer.endColor = Color.green;
+                }
+
+                if (Physics.Raycast(middleLeftRaySPosition, middleLeftSensorDirection.normalized, out hit, middleLeftSensorMagnitude, Physics.DefaultRaycastLayers))
+                {
+                    middleLeftSensorLineRenderer.startColor = Color.red;
+                    middleLeftSensorLineRenderer.endColor = Color.red;
+                    sensors[3] = (middleLeftSensorMagnitude - hit.distance) / middleLeftSensorMagnitude;
+                }
+                else
+                {
+                    middleLeftSensorLineRenderer.startColor = Color.green;
+                    middleLeftSensorLineRenderer.endColor = Color.green;
+                }
+
+                if (Physics.Raycast(middleRightRaySPosition, middleRightSensorDirection.normalized, out hit, middleRightSensorMagnitude, Physics.DefaultRaycastLayers))
+                {
+                    middleRightSensorLineRenderer.startColor = Color.red;
+                    middleRightSensorLineRenderer.endColor = Color.red;
+                    sensors[4] = (middleRightSensorMagnitude - hit.distance) / middleRightSensorMagnitude;
+                }
+                else
+                {
+                    middleRightSensorLineRenderer.startColor = Color.green;
+                    middleRightSensorLineRenderer.endColor = Color.green;
                 }
 
                 // Controls
@@ -132,9 +187,9 @@ namespace NeuroGen
                 {
                     ISignalArray input = box.InputSignalArray;
 
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 5; i++)
                         input[i] = sensors[i];
-                    input[3] = velocity;
+                    // input[3] = velocity;
 
                     box.Activate();
 
@@ -151,7 +206,7 @@ namespace NeuroGen
                     // Split it up into 2 categories
                     verticalControl = output[1] > 0.5 ? 1 : 0;
 
-                    isBraking = output[2] > 0.5 ? true : false;
+                    // isBraking = output[2] > 0.5 ? true : false;
 
                     // Accumulate distance
                     distanceTravelled += Vector3.Distance(transform.position, lastPosition);
