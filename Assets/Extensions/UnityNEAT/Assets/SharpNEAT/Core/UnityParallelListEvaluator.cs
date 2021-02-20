@@ -114,8 +114,6 @@ namespace SharpNEAT.Core
 
                     genome.EvaluationInfo.SetFitness(fitness);
                     genome.EvaluationInfo.AuxFitnessArr = fitnessDict[genome][0]._auxFitnessArr;
-
-                    Debug.Log(genome.Id + " " + fitness);
                 }
             }
         }

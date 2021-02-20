@@ -5,11 +5,12 @@ namespace NeuroGen
     public class Main : MonoBehaviour
     {
         public Car car;
-        static public Car[] cars;
-        public GameObject track;
-        static public Vector3 startPosition;
+        public GameObject[] extensions;
+        public int selectedExtensionIndex;
         void Start()
         {
+            if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
+                extensions[selectedExtensionIndex].SetActive(true);
             // int count = 1;
             // cars = new Car[count];
             // for (int i = 0; i < count; i++)

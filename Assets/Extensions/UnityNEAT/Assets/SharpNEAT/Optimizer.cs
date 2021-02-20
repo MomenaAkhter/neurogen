@@ -208,15 +208,15 @@ public class Optimizer : MonoBehaviour
         int i = 0;
         while (true)
         {
-            if (controller.IsRunning)
+            if (controller.isRunning)
             {
                 if (i % 100 == 0)
-                    Debug.Log("Fitness: " + controller.GetFitness());
+                    Debug.Log("Fitness: " + controller.Fitness);
             }
             else
             {
                 ControllerMap.Clear();
-                Debug.Log("Final fitness: " + controller.GetFitness());
+                Debug.Log("Final fitness: " + controller.Fitness);
                 break;
             }
 
@@ -230,7 +230,7 @@ public class Optimizer : MonoBehaviour
     {
         if (ControllerMap.ContainsKey(box))
         {
-            var fitness = ControllerMap[box].GetFitness();
+            var fitness = ControllerMap[box].Fitness;
             ControllerMap.Remove(box);
             return fitness;
         }

@@ -36,11 +36,11 @@ namespace SharpNeat.Decoders
                                                            NetworkActivationScheme activationScheme)
         {
             List<Neuron> neuronList;
-            List<Connection> connectionList;
+            List<Phenomes.NeuralNets.Connection> connectionList;
             InternalDecode(networkDef, out neuronList, out connectionList);
 
             // Construct neural net.
-            if(activationScheme.RelaxingActivation)
+            if (activationScheme.RelaxingActivation)
             {
                 return new RelaxingCyclicNetwork(neuronList,
                                                  connectionList,
@@ -63,7 +63,7 @@ namespace SharpNeat.Decoders
 
         private static void InternalDecode(INetworkDefinition networkDef,
                                            out List<Neuron> neuronList,
-                                           out List<Connection> connectionList)
+                                           out List<Phenomes.NeuralNets.Connection> connectionList)
         {
             // Build a list of neurons.
             INodeList nodeDefList = networkDef.NodeList;
@@ -71,12 +71,12 @@ namespace SharpNeat.Decoders
             neuronList = new List<Neuron>(nodeCount);
 
             // A dictionary of neurons keyed on their innovation ID.
-            Dictionary<uint,Neuron> neuronDictionary = new Dictionary<uint,Neuron>(nodeCount);
+            Dictionary<uint, Neuron> neuronDictionary = new Dictionary<uint, Neuron>(nodeCount);
 
             // Loop neuron genes.
             IActivationFunctionLibrary activationFnLib = networkDef.ActivationFnLibrary;
 
-            for(int i=0; i<nodeCount; i++) 
+            for (int i = 0; i < nodeCount; i++)
             {   // Create a Neuron, add it to the neuron list and add an entry into neuronDictionary -
                 // required for next loop.
                 INetworkNode nodeDef = nodeDefList[i];
@@ -98,14 +98,14 @@ namespace SharpNeat.Decoders
             // Build a list of connections.
             IConnectionList connectionDefList = networkDef.ConnectionList;
             int connectionCount = connectionDefList.Count;
-            connectionList = new List<Connection>(connectionCount);
+            connectionList = new List<Phenomes.NeuralNets.Connection>(connectionCount);
 
             // Loop connection genes.
-            for(int i=0; i<connectionCount; i++)
+            for (int i = 0; i < connectionCount; i++)
             {
                 INetworkConnection connDef = connectionDefList[i];
                 connectionList.Add(
-                        new Connection(neuronDictionary[connDef.SourceNodeId], 
+                        new Phenomes.NeuralNets.Connection(neuronDictionary[connDef.SourceNodeId],
                                        neuronDictionary[connDef.TargetNodeId],
                                        connDef.Weight));
             }

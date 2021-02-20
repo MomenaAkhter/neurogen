@@ -4,10 +4,12 @@ using SharpNeat.Phenomes;
 
 public abstract class UnitController : MonoBehaviour
 {
-    public bool IsRunning = false;
+    public bool isRunning = false;
     public abstract void Activate(IBlackBox box);
 
     public abstract void Stop();
-
-    public abstract float GetFitness();
+    public abstract float Fitness
+    {
+        get;
+    }
 }

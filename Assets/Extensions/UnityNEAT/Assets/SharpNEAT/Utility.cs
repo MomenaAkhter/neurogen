@@ -6,11 +6,12 @@ using System.Xml;
 using System;
 using SharpNeat.Domains;
 
-public class Utility : MonoBehaviour {
+public class Utility : MonoBehaviour
+{
 
     public static bool DebugLog = false;
 
-	/// <summary>
+    /// <summary>
     /// Determine the signed angle between two vectors, with normal 'n'
     /// as the rotation axis.
     /// </summary>
@@ -51,7 +52,7 @@ public class Utility : MonoBehaviour {
             {
                 throw new ArgumentNullException("GameObject B is null");
             }
-        } 
+        }
     }
 
     public static float GetDistance(GameObject A, GameObject B)
@@ -73,7 +74,6 @@ public class Utility : MonoBehaviour {
                 throw new ArgumentNullException("GameObject B is null");
             }
         }
-        return 0.0f;
     }
 
     /// <summary>

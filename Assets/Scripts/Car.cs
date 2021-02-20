@@ -27,6 +27,10 @@ namespace NeuroGen
         private Vector3 lastPosition;
         private float distanceTravelled;
         private float idleTime = 0;
+        public SpriteRenderer speciesColor;
+        public int Id { get; protected set; }
+
+        public override float Fitness { get { return distanceTravelled; } }
 
         // Start is called before the first frame update
         void Start()
@@ -86,7 +90,7 @@ namespace NeuroGen
 
         void FixedUpdate()
         {
-            if (humanControlled || IsRunning)
+            if (humanControlled || isRunning)
             {
                 // Sensors
                 for (int i = 0; i < 5; i++)
@@ -183,7 +187,7 @@ namespace NeuroGen
                     verticalControl = Input.GetAxis("Vertical");
                     isBraking = Input.GetKey(KeyCode.Space);
                 }
-                else if (IsRunning)
+                else if (isRunning)
                 {
                     ISignalArray input = box.InputSignalArray;
 
@@ -264,19 +268,20 @@ namespace NeuroGen
             distanceTravelled = 0;
 
             this.box = box;
-            IsRunning = true;
+            isRunning = true;
             gameObject.SetActive(true);
+        }
+
+        public void Reinit(Transform transform)
+        {
+            this.transform.position = transform.position;
+            this.transform.rotation = transform.rotation;
         }
 
         override public void Stop()
         {
-            IsRunning = false;
+            isRunning = false;
             gameObject.SetActive(false);
-        }
-
-        public override float GetFitness()
-        {
-            return distanceTravelled;
         }
     }
 }

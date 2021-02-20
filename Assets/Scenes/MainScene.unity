@@ -415,6 +415,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   car: {fileID: 6388864814560160020, guid: 56b4c177a3fd142e9946fd7ad64bf59c, type: 3}
   track: {fileID: 0}
+--- !u!1 &1038493330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1038493331}
+  m_Layer: 0
+  m_Name: CheckPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1038493331
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038493330}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 17.816488, y: 8.699731, z: -0.9682646}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1263717738
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +538,87 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1403219095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1403219097}
+  - component: {fileID: 1403219096}
+  m_Layer: 0
+  m_Name: Population
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1403219096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403219095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 600a559aa33274759b9216d5f8565a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config:
+    genomeCount: 50
+    inputCount: 1
+    outputCount: 1
+    weightInitRandomValue: 1
+    chanceToDisableGeneIfDisabledInEitherParent: 0.75
+    maxStagnation: 20
+    goodFitness: 9999999
+    genomesToRememberForNextGeneration: 0.25
+    minNbOfGenomesToKeep: 2
+    weightedRandomGradient: 1
+    partOfGenomesToCopyForNextGenerations: 0.2
+    structMutation:
+      nodeAddProb: 0.2
+      nodeDelProb: 0.01
+      connectionAddProb: 0.7
+      connectionDelProb: 0.1
+    weightMutation:
+      prob: 0.8
+      changeValProb: 0.9
+      scale: 0.1
+    speciesCompatibility:
+      excessImpact: 1
+      disjointImpact: 1
+      weightMeanDifCoef: 3
+      threshold: 0.2
+  genomeProxyPrefab: {fileID: 0}
+  genomeProxyStorage: {fileID: 0}
+  onGenerationChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onGenomeStatusChange:
+    m_PersistentCalls:
+      m_Calls: []
+  carSpawnPoint: {fileID: 0}
+  theRealFinish: {fileID: 0}
+  maxVelocity: 55
+  maxNegativeVelocity: -5
+--- !u!4 &1403219097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403219095}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 17.816488, y: 8.699731, z: -0.9682646}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1729132823
 GameObject:
@@ -688,8 +799,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794891546}
   m_LocalRotation: {x: 0, y: 0.9998157, z: 0, w: 0.019197455}
-  m_LocalPosition: {x: -9.16, y: 10.9, z: -22.7}
-  m_LocalScale: {x: 12.01, y: 2.4, z: 0.2}
+  m_LocalPosition: {x: -7.86, y: 10.9, z: -22.64}
+  m_LocalScale: {x: 8.9, y: 2.4, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
