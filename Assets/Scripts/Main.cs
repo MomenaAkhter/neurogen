@@ -4,11 +4,12 @@ namespace NeuroGen
 {
     public class Main : MonoBehaviour
     {
-        public Car car;
         public GameObject[] extensions;
         public int selectedExtensionIndex;
         void Start()
         {
+            Time.timeScale = 5;
+
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
                 extensions[selectedExtensionIndex].SetActive(true);
             // int count = 1;

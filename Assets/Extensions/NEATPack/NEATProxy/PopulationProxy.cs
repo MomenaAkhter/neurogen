@@ -73,7 +73,7 @@ namespace NEAT
                 else
                     obj = Instantiate(genomeProxyPrefab, genomeProxyStorage).gameObject;
 
-                var proxyComponent = obj.GetComponent<GenomeProxy>();
+                var proxyComponent = obj.AddComponent<GenomeCar>();
                 proxyComponent.Init(i, Popl);
                 GenomeProxies[i] = proxyComponent;
 

@@ -313,7 +313,7 @@ namespace SharpNeat.EvolutionAlgorithms
                 {
                     UpdateEvent(this, EventArgs.Empty);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //__log.Error("UpdateEvent listener threw exception", ex);
                 }
@@ -329,7 +329,7 @@ namespace SharpNeat.EvolutionAlgorithms
                 {
                     PausedEvent(this, EventArgs.Empty);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //__log.Error("PausedEvent listener threw exception", ex);
                 }

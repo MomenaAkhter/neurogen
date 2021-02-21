@@ -15,7 +15,7 @@ namespace NeuroGen
         public bool isTeleport = false;
         public Transform teleportPosition;
 
-        public List<Car> crossedBy = new List<Car>();
+        public List<CarController> crossedBy = new List<CarController>();
 
         public void Teleport(Transform target)
         {
