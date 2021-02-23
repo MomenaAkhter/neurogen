@@ -43,6 +43,7 @@ public class GenomeCar : GenomeProxy
     private void Awake()
     {
         carController = gameObject.GetComponent<NeuroGen.CarController>();
+
         populationCar = FindObjectOfType<PopulationCar>();
     }
 
@@ -50,6 +51,7 @@ public class GenomeCar : GenomeProxy
     {
         ActivateNeuralNet(carController.SensorValues);
         GenomeProperty.Fitness = carController.Fitness;
+        carController.fitnessText.text = GenomeProperty.Fitness.ToString("0.00");
     }
     #endregion
 

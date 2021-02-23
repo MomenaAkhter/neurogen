@@ -6,6 +6,7 @@ namespace NeuroGen
     {
         public GameObject[] extensions;
         public int selectedExtensionIndex;
+        private float timeScale = 5;
         void Start()
         {
             Time.timeScale = 5;
@@ -18,6 +19,15 @@ namespace NeuroGen
             //     cars[i] = Instantiate<Car>(car);
 
             // cars[0].humanControlled = true;
+        }
+
+        void OnGUI()
+        {
+            timeScale = GUI.HorizontalSlider(new Rect(25, 5, 100, 30), timeScale, 0.0F, 100.0F);
+
+            Time.timeScale = timeScale;
+
+            // Debug.Log(Time.timeScale);
         }
 
         // void OnDrawGizmos()

@@ -5,6 +5,7 @@ namespace NeuroGen
 {
     public class CarController : MonoBehaviour
     {
+        public TextMesh fitnessText;
         public GameObject leftSensor;
         public GameObject middleSensor;
         public GameObject rightSensor;
@@ -262,6 +263,7 @@ namespace NeuroGen
 
             isRunning = true;
             gameObject.SetActive(true);
+            idleTime = 0;
         }
 
         public void Stop()

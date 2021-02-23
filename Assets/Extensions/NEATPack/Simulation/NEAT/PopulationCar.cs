@@ -62,7 +62,13 @@ public class PopulationCar : PopulationProxy
 
     public override void Evolve()
     {
+        string fitnesses = "Population fitnesses: ";
+        foreach (var car in cars)
+            fitnesses += car.GenomeProperty.Fitness + " ";
+        Debug.Log(fitnesses);
+
         base.Evolve();
+
         ReinitCars();
 
         // genomeColorCtrl.UpdateSpeciesColor(Popl.SpeciesCtrl);
