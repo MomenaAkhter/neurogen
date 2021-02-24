@@ -24,7 +24,6 @@ namespace NeuroGen
         public float motorForce = 1100f;
         public float brakeForce = 3000f;
         public bool humanControlled = false;
-        private Vector3 lastPosition;
         private float distanceTravelled;
         private float idleTime = 0;
         public bool isRunning = false;
@@ -123,7 +122,6 @@ namespace NeuroGen
         // Start is called before the first frame update
         void Awake()
         {
-            lastPosition = transform.position;
             distanceTravelled = 0;
 
             var extents = transform.GetChild(0).gameObject.GetComponent<Renderer>().bounds.extents;
@@ -183,7 +181,8 @@ namespace NeuroGen
                 // Controls
                 float horizontalControl = 0, verticalControl = 0;
                 bool isBraking = false;
-                var velocity = GetComponent<Rigidbody>().velocity.sqrMagnitude;
+                // var velocity = GetComponent<Rigidbody>().velocity.sqrMagnitude;
+                var localVelocity = transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity);
 
                 if (humanControlled)
                 {
@@ -193,25 +192,16 @@ namespace NeuroGen
                 }
                 else if (isRunning)
                 {
-                    // Split the values into 3 categories
-                    if (output[0] <= 0.33)
-                        horizontalControl = 0;
-                    else if (output[0] > 0.33 && output[0] <= .66)
-                        horizontalControl = 1;
-                    else
-                        horizontalControl = -1;
-
-                    // Split it up into 2 categories
-                    verticalControl = output[1] > 0.5 ? 1 : 0;
+                    horizontalControl = Mathf.Lerp(-1, 1, output[0]);
+                    verticalControl = Mathf.Lerp(0, 1, output[1]);
 
                     // isBraking = output[2] > 0.5 ? true : false;
 
                     // Accumulate distance
-                    distanceTravelled += Vector3.Distance(transform.position, lastPosition);
-                    lastPosition = transform.position;
+                    distanceTravelled += localVelocity.z * Time.fixedDeltaTime;
 
                     // Idle timer
-                    if (velocity <= .5)
+                    if (localVelocity.z <= .5)
                     {
                         idleTime += Time.fixedDeltaTime;
                         if (idleTime > 5)
@@ -227,7 +217,7 @@ namespace NeuroGen
                 for (int i = 0; i < 2; i++)
                 {
                     // Motor
-                    wheelColliders[i].motorTorque = velocity <= 20 ? verticalControl * motorForce : 0;
+                    wheelColliders[i].motorTorque = localVelocity.z <= 20 ? verticalControl * motorForce : 0;
 
                     // Steering
                     wheelColliders[i].steerAngle = maxSteeringAngle * horizontalControl;
@@ -258,7 +248,6 @@ namespace NeuroGen
 
         public void Reinit()
         {
-            lastPosition = transform.position;
             distanceTravelled = 0;
 
             isRunning = true;

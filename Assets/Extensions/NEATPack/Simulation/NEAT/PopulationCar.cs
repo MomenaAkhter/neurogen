@@ -62,10 +62,17 @@ public class PopulationCar : PopulationProxy
 
     public override void Evolve()
     {
-        string fitnesses = "Population fitnesses: ";
+        string text = "Population fitnesses: ";
+
+        List<float> fitnessValues = new List<float>();
         foreach (var car in cars)
-            fitnesses += car.GenomeProperty.Fitness + " ";
-        Debug.Log(fitnesses);
+            fitnessValues.Add(car.GenomeProperty.Fitness);
+
+        fitnessValues.Sort((x, y) => -x.CompareTo(y));
+
+        foreach (var fitnessValue in fitnessValues)
+            text += fitnessValue + " ";
+        Debug.Log(text);
 
         base.Evolve();
 

@@ -6,24 +6,31 @@ namespace NeuroGen
     {
         public GameObject[] extensions;
         public int selectedExtensionIndex;
-        private float timeScale = 5;
+        public float timeScale = 5;
+        // public CarController car;
+        // private CarController[] cars;
         void Start()
         {
-            Time.timeScale = 5;
+            Time.timeScale = timeScale;
 
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
                 extensions[selectedExtensionIndex].SetActive(true);
             // int count = 1;
-            // cars = new Car[count];
+            // cars = new CarController[count];
             // for (int i = 0; i < count; i++)
-            //     cars[i] = Instantiate<Car>(car);
+            //     cars[i] = Instantiate<CarController>(car);
 
             // cars[0].humanControlled = true;
         }
 
+        // private void FixedUpdate()
+        // {
+        //     cars[0].Step(null);
+        // }
+
         void OnGUI()
         {
-            timeScale = GUI.HorizontalSlider(new Rect(25, 5, 100, 30), timeScale, 0.0F, 100.0F);
+            timeScale = GUI.HorizontalSlider(new Rect(25, 5, 200, 30), timeScale, 1, 100);
 
             Time.timeScale = timeScale;
 
