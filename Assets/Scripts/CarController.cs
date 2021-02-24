@@ -6,17 +6,9 @@ namespace NeuroGen
     public class CarController : MonoBehaviour
     {
         public TextMesh fitnessText;
-        public GameObject leftSensor;
-        public GameObject middleSensor;
-        public GameObject rightSensor;
-        public GameObject middleLeftSensor;
-        public GameObject middleRightSensor;
+        public GameObject[] sensors;
         private bool showSensors = true;
-        private LineRenderer leftSensorLineRenderer;
-        private LineRenderer middleSensorLineRenderer;
-        private LineRenderer rightSensorLineRenderer;
-        private LineRenderer middleLeftSensorLineRenderer;
-        private LineRenderer middleRightSensorLineRenderer;
+        private LineRenderer[] sensorLineRenderers;
 
         public WheelCollider[] wheelColliders;
         public Transform[] wheelTransforms;
@@ -32,94 +24,37 @@ namespace NeuroGen
         {
             get
             {
-                float[] sensors = { 0, 0, 0, 0, 0, 0 };
+                float[] sensorValues = new float[10];
 
-                var frontRaySPosition = middleSensorLineRenderer.transform.TransformPoint(middleSensorLineRenderer.GetPosition(0));
-                var middleLeftRaySPosition = middleLeftSensorLineRenderer.transform.TransformPoint(middleLeftSensorLineRenderer.GetPosition(0));
-                var middleRightRaySPosition = middleRightSensorLineRenderer.transform.TransformPoint(middleRightSensorLineRenderer.GetPosition(0));
-
-                var leftSensorDirection = leftSensorLineRenderer.transform.TransformDirection(leftSensorLineRenderer.GetPosition(1));
-                var leftSensorMagnitude = leftSensorDirection.magnitude;
-
-                var middleSensorDirection = middleSensorLineRenderer.transform.TransformDirection(middleSensorLineRenderer.GetPosition(1));
-                var middleSensorMagnitude = middleSensorDirection.magnitude;
-
-                var rightSensorDirection = rightSensorLineRenderer.transform.TransformDirection(rightSensorLineRenderer.GetPosition(1));
-                var rightSensorMagnitude = rightSensorDirection.magnitude;
-
-                var middleLeftSensorDirection = middleLeftSensorLineRenderer.transform.TransformDirection(middleLeftSensorLineRenderer.GetPosition(1));
-                var middleLeftSensorMagnitude = middleLeftSensorDirection.magnitude;
-
-                var middleRightSensorDirection = middleRightSensorLineRenderer.transform.TransformDirection(middleRightSensorLineRenderer.GetPosition(1));
-                var middleRightSensorMagnitude = middleRightSensorDirection.magnitude;
-
-                RaycastHit hit;
-                if (Physics.Raycast(frontRaySPosition, leftSensorDirection.normalized, out hit, leftSensorMagnitude, Physics.DefaultRaycastLayers))
+                for (int i = 0; i < sensors.Length; i++)
                 {
-                    leftSensorLineRenderer.startColor = Color.red;
-                    leftSensorLineRenderer.endColor = Color.red;
-                    sensors[0] = (leftSensorMagnitude - hit.distance) / leftSensorMagnitude;
-                }
-                else
-                {
-                    leftSensorLineRenderer.startColor = Color.green;
-                    leftSensorLineRenderer.endColor = Color.green;
+                    var lineRenderer = sensors[i].GetComponent<LineRenderer>();
+                    var startingPosition = lineRenderer.transform.TransformPoint(lineRenderer.GetPosition(0));
+                    var endingPosition = lineRenderer.transform.TransformPoint(lineRenderer.GetPosition(1));
+                    var sensorLength = Vector3.Distance(startingPosition, endingPosition);
+                    var sensorDirection = lineRenderer.transform.TransformDirection(lineRenderer.GetPosition(1));
+
+                    RaycastHit hit;
+                    if (Physics.Raycast(startingPosition, sensorDirection.normalized, out hit, sensorLength, Physics.DefaultRaycastLayers))
+                    {
+                        lineRenderer.startColor = Color.red;
+                        lineRenderer.endColor = Color.red;
+                        sensorValues[i] = (sensorLength - hit.distance) / sensorLength;
+                    }
+                    else
+                    {
+                        lineRenderer.startColor = Color.green;
+                        lineRenderer.endColor = Color.green;
+                        sensorValues[i] = 0;
+                    }
                 }
 
-                if (Physics.Raycast(frontRaySPosition, middleSensorDirection.normalized, out hit, middleSensorMagnitude, Physics.DefaultRaycastLayers))
-                {
-                    middleSensorLineRenderer.startColor = Color.red;
-                    middleSensorLineRenderer.endColor = Color.red;
-                    sensors[1] = (middleSensorMagnitude - hit.distance) / middleSensorMagnitude;
-                }
-                else
-                {
-                    middleSensorLineRenderer.startColor = Color.green;
-                    middleSensorLineRenderer.endColor = Color.green;
-                }
-
-                if (Physics.Raycast(frontRaySPosition, rightSensorDirection.normalized, out hit, rightSensorMagnitude, Physics.DefaultRaycastLayers))
-                {
-                    rightSensorLineRenderer.startColor = Color.red;
-                    rightSensorLineRenderer.endColor = Color.red;
-                    sensors[2] = (rightSensorMagnitude - hit.distance) / rightSensorMagnitude;
-                }
-                else
-                {
-                    rightSensorLineRenderer.startColor = Color.green;
-                    rightSensorLineRenderer.endColor = Color.green;
-                }
-
-                if (Physics.Raycast(middleLeftRaySPosition, middleLeftSensorDirection.normalized, out hit, middleLeftSensorMagnitude, Physics.DefaultRaycastLayers))
-                {
-                    middleLeftSensorLineRenderer.startColor = Color.red;
-                    middleLeftSensorLineRenderer.endColor = Color.red;
-                    sensors[3] = (middleLeftSensorMagnitude - hit.distance) / middleLeftSensorMagnitude;
-                }
-                else
-                {
-                    middleLeftSensorLineRenderer.startColor = Color.green;
-                    middleLeftSensorLineRenderer.endColor = Color.green;
-                }
-
-                if (Physics.Raycast(middleRightRaySPosition, middleRightSensorDirection.normalized, out hit, middleRightSensorMagnitude, Physics.DefaultRaycastLayers))
-                {
-                    middleRightSensorLineRenderer.startColor = Color.red;
-                    middleRightSensorLineRenderer.endColor = Color.red;
-                    sensors[4] = (middleRightSensorMagnitude - hit.distance) / middleRightSensorMagnitude;
-                }
-                else
-                {
-                    middleRightSensorLineRenderer.startColor = Color.green;
-                    middleRightSensorLineRenderer.endColor = Color.green;
-                }
-
-                sensors[5] = transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity).z;
+                sensorValues[9] = transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity).z;
 
                 // for (int i = 0; i < sensors.Length; i++)
                 //     sensors[i] = 1 - sensors[i];
 
-                return sensors;
+                return sensorValues;
             }
         }
 
@@ -133,50 +68,11 @@ namespace NeuroGen
 
             if (showSensors)
             {
-                float offset = 0f;
-                leftSensorLineRenderer = leftSensor.GetComponent<LineRenderer>();
-                leftSensorLineRenderer.transform.position += new Vector3(0, 0, extents.z);
-                leftSensorLineRenderer.useWorldSpace = false;
-                leftSensorLineRenderer.startColor = Color.green;
-                leftSensorLineRenderer.endColor = Color.green;
-                leftSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
-                leftSensorLineRenderer.SetPosition(0, Vector3.zero);
-                leftSensorLineRenderer.SetPosition(1, new Vector3(-(5f + offset), 0, 3f + offset));
-
-                middleSensorLineRenderer = middleSensor.GetComponent<LineRenderer>();
-                middleSensorLineRenderer.transform.position += new Vector3(0, 0, extents.z);
-                middleSensorLineRenderer.useWorldSpace = false;
-                middleSensorLineRenderer.startColor = Color.green;
-                middleSensorLineRenderer.endColor = Color.green;
-                middleSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
-                middleSensorLineRenderer.SetPosition(0, Vector3.zero); middleSensorLineRenderer.SetPosition(1, new Vector3(0, 0, 5.4f + offset));
-
-                rightSensorLineRenderer = rightSensor.GetComponent<LineRenderer>();
-                rightSensorLineRenderer.transform.position += new Vector3(0, 0, extents.z);
-                rightSensorLineRenderer.useWorldSpace = false;
-                rightSensorLineRenderer.startColor = Color.green;
-                rightSensorLineRenderer.endColor = Color.green;
-                rightSensorLineRenderer.SetPosition(0, Vector3.zero);
-                rightSensorLineRenderer.SetPosition(1, new Vector3(5f + offset, 0, 3f + offset));
-                rightSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
-
-                middleLeftSensorLineRenderer = middleLeftSensor.GetComponent<LineRenderer>();
-                middleLeftSensorLineRenderer.transform.position += new Vector3(-extents.x, 0, 0);
-                middleLeftSensorLineRenderer.useWorldSpace = false;
-                middleLeftSensorLineRenderer.startColor = Color.green;
-                middleLeftSensorLineRenderer.endColor = Color.green;
-                middleLeftSensorLineRenderer.SetPosition(0, Vector3.zero);
-                middleLeftSensorLineRenderer.SetPosition(1, new Vector3(-(5f + offset), 0, 0));
-                middleLeftSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
-
-                middleRightSensorLineRenderer = middleRightSensor.GetComponent<LineRenderer>();
-                middleRightSensorLineRenderer.transform.position += new Vector3(extents.x, 0, 0);
-                middleRightSensorLineRenderer.useWorldSpace = false;
-                middleRightSensorLineRenderer.startColor = Color.green;
-                middleRightSensorLineRenderer.endColor = Color.green;
-                middleRightSensorLineRenderer.SetPosition(0, Vector3.zero);
-                middleRightSensorLineRenderer.SetPosition(1, new Vector3(5f + offset, 0, 0));
-                middleRightSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
+                foreach (var sensor in sensors)
+                {
+                    sensor.GetComponent<LineRenderer>().startColor = Color.green;
+                    sensor.GetComponent<LineRenderer>().endColor = Color.green;
+                }
             }
         }
 
@@ -187,7 +83,6 @@ namespace NeuroGen
                 // Controls
                 float horizontalControl = 0, verticalControl = 0;
                 float brakeControl = 0;
-                // var velocity = GetComponent<Rigidbody>().velocity.sqrMagnitude;
                 var localVelocity = transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity);
 
                 if (humanControlled)

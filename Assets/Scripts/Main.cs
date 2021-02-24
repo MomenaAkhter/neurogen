@@ -7,18 +7,23 @@ namespace NeuroGen
         public GameObject[] extensions;
         public int selectedExtensionIndex;
         public float timeScale = 5;
-        // public CarController car;
-        // private CarController[] cars;
+        public CarController car;
+        private CarController[] cars;
+        public GameObject spawnPoint;
         void Start()
         {
             Time.timeScale = timeScale;
 
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
                 extensions[selectedExtensionIndex].SetActive(true);
+
             // int count = 1;
             // cars = new CarController[count];
             // for (int i = 0; i < count; i++)
+            // {
             //     cars[i] = Instantiate<CarController>(car);
+            //     cars[i].transform.SetPositionAndRotation(spawnPoint.transform.position, spawnPoint.transform.rotation);
+            // }
 
             // cars[0].humanControlled = true;
         }
@@ -27,7 +32,10 @@ namespace NeuroGen
         // {
         //     cars[0].Step(null);
         //     var values = cars[0].SensorValues;
-        //     Debug.Log(values[0] + " " + values[1] + " " + values[2] + " " + values[3] + " " + values[4]);
+        //     string text = "";
+        //     foreach (var value in values)
+        //         text += value + " ";
+        //     Debug.Log(text);
         // }
 
         void OnGUI()

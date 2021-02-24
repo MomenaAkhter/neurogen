@@ -548,7 +548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &1263717739
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config:
     genomeCount: 50
-    inputCount: 5
+    inputCount: 10
     outputCount: 2
     weightInitRandomValue: 25
     chanceToDisableGeneIfDisabledInEitherParent: 0.9
@@ -1092,6 +1092,8 @@ MonoBehaviour:
   - {fileID: 1403219095}
   selectedExtensionIndex: 1
   timeScale: 5
+  car: {fileID: 0}
+  spawnPoint: {fileID: 0}
 --- !u!4 &1983295362
 Transform:
   m_ObjectHideFlags: 0
