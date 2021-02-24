@@ -14,6 +14,7 @@ public class SmoothFollow : MonoBehaviour
     [SerializeField] private Transform allMapViewPosition = null;
 
     private Vector3 smoothDampVel;
+    [SerializeField] private bool thirdPersonMode = false;
 
     void LateUpdate()
     {
@@ -25,15 +26,17 @@ public class SmoothFollow : MonoBehaviour
     void SmoothDampToTarget()
     {
         var targetPosition = target.position + Vector3.up * height;
-        targetPosition = transform.TransformPoint(transform.InverseTransformPoint(targetPosition) - new Vector3(0, 0, 12));
+        if (thirdPersonMode)
+        {
+            targetPosition = transform.TransformPoint(transform.InverseTransformPoint(targetPosition) - new Vector3(0, 0, 12));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, target.rotation, 5);
+        }
         transform.position = Vector3.SmoothDamp(
             transform.position,
             targetPosition,
             ref smoothDampVel,
             smoothDampTime
         );
-
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, target.rotation, 1);
     }
 
     public void GotoAllMapView()
