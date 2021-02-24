@@ -26,6 +26,8 @@ namespace NeuroGen
         // private void FixedUpdate()
         // {
         //     cars[0].Step(null);
+        //     var values = cars[0].SensorValues;
+        //     Debug.Log(values[0] + " " + values[1] + " " + values[2] + " " + values[3] + " " + values[4]);
         // }
 
         void OnGUI()

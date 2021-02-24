@@ -32,7 +32,7 @@ namespace NeuroGen
         {
             get
             {
-                float[] sensors = { 0, 0, 0, 0, 0 };
+                float[] sensors = { 0, 0, 0, 0, 0, 0 };
 
                 var frontRaySPosition = middleSensorLineRenderer.transform.TransformPoint(middleSensorLineRenderer.GetPosition(0));
                 var middleLeftRaySPosition = middleLeftSensorLineRenderer.transform.TransformPoint(middleLeftSensorLineRenderer.GetPosition(0));
@@ -114,6 +114,11 @@ namespace NeuroGen
                     middleRightSensorLineRenderer.endColor = Color.green;
                 }
 
+                sensors[5] = transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity).z;
+
+                // for (int i = 0; i < sensors.Length; i++)
+                //     sensors[i] = 1 - sensors[i];
+
                 return sensors;
             }
         }
@@ -128,6 +133,7 @@ namespace NeuroGen
 
             if (showSensors)
             {
+                float offset = 0f;
                 leftSensorLineRenderer = leftSensor.GetComponent<LineRenderer>();
                 leftSensorLineRenderer.transform.position += new Vector3(0, 0, extents.z);
                 leftSensorLineRenderer.useWorldSpace = false;
@@ -135,7 +141,7 @@ namespace NeuroGen
                 leftSensorLineRenderer.endColor = Color.green;
                 leftSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
                 leftSensorLineRenderer.SetPosition(0, Vector3.zero);
-                leftSensorLineRenderer.SetPosition(1, new Vector3(-5f, 0, 3f));
+                leftSensorLineRenderer.SetPosition(1, new Vector3(-(5f + offset), 0, 3f + offset));
 
                 middleSensorLineRenderer = middleSensor.GetComponent<LineRenderer>();
                 middleSensorLineRenderer.transform.position += new Vector3(0, 0, extents.z);
@@ -143,7 +149,7 @@ namespace NeuroGen
                 middleSensorLineRenderer.startColor = Color.green;
                 middleSensorLineRenderer.endColor = Color.green;
                 middleSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
-                middleSensorLineRenderer.SetPosition(0, Vector3.zero); middleSensorLineRenderer.SetPosition(1, new Vector3(0, 0, 5.4f));
+                middleSensorLineRenderer.SetPosition(0, Vector3.zero); middleSensorLineRenderer.SetPosition(1, new Vector3(0, 0, 5.4f + offset));
 
                 rightSensorLineRenderer = rightSensor.GetComponent<LineRenderer>();
                 rightSensorLineRenderer.transform.position += new Vector3(0, 0, extents.z);
@@ -151,7 +157,7 @@ namespace NeuroGen
                 rightSensorLineRenderer.startColor = Color.green;
                 rightSensorLineRenderer.endColor = Color.green;
                 rightSensorLineRenderer.SetPosition(0, Vector3.zero);
-                rightSensorLineRenderer.SetPosition(1, new Vector3(5f, 0, 3f));
+                rightSensorLineRenderer.SetPosition(1, new Vector3(5f + offset, 0, 3f + offset));
                 rightSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
 
                 middleLeftSensorLineRenderer = middleLeftSensor.GetComponent<LineRenderer>();
@@ -160,7 +166,7 @@ namespace NeuroGen
                 middleLeftSensorLineRenderer.startColor = Color.green;
                 middleLeftSensorLineRenderer.endColor = Color.green;
                 middleLeftSensorLineRenderer.SetPosition(0, Vector3.zero);
-                middleLeftSensorLineRenderer.SetPosition(1, new Vector3(-5f, 0, 0));
+                middleLeftSensorLineRenderer.SetPosition(1, new Vector3(-(5f + offset), 0, 0));
                 middleLeftSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
 
                 middleRightSensorLineRenderer = middleRightSensor.GetComponent<LineRenderer>();
@@ -169,7 +175,7 @@ namespace NeuroGen
                 middleRightSensorLineRenderer.startColor = Color.green;
                 middleRightSensorLineRenderer.endColor = Color.green;
                 middleRightSensorLineRenderer.SetPosition(0, Vector3.zero);
-                middleRightSensorLineRenderer.SetPosition(1, new Vector3(5f, 0, 0));
+                middleRightSensorLineRenderer.SetPosition(1, new Vector3(5f + offset, 0, 0));
                 middleRightSensorLineRenderer.transform.position += new Vector3(0, 0.5f, 0);
             }
         }
@@ -180,7 +186,7 @@ namespace NeuroGen
             {
                 // Controls
                 float horizontalControl = 0, verticalControl = 0;
-                bool isBraking = false;
+                float brakeControl = 0;
                 // var velocity = GetComponent<Rigidbody>().velocity.sqrMagnitude;
                 var localVelocity = transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity);
 
@@ -188,14 +194,15 @@ namespace NeuroGen
                 {
                     horizontalControl = Input.GetAxis("Horizontal");
                     verticalControl = Input.GetAxis("Vertical");
-                    isBraking = Input.GetKey(KeyCode.Space);
+                    brakeControl = Input.GetKey(KeyCode.Space) ? 1 : 0;
                 }
                 else if (isRunning)
                 {
                     horizontalControl = Mathf.Lerp(-1, 1, output[0]);
-                    verticalControl = Mathf.Lerp(0, 1, output[1]);
+                    verticalControl = Mathf.Lerp(-1, 1, output[1]);
 
-                    // isBraking = output[2] > 0.5 ? true : false;
+                    if ((verticalControl < 0 && localVelocity.z > 1) || (verticalControl > 0 && localVelocity.z < -1))
+                        brakeControl = 1;
 
                     // Accumulate distance
                     distanceTravelled += localVelocity.z * Time.fixedDeltaTime;
@@ -204,7 +211,7 @@ namespace NeuroGen
                     if (localVelocity.z <= .5)
                     {
                         idleTime += Time.fixedDeltaTime;
-                        if (idleTime > 5)
+                        if (idleTime > 2)
                             Stop();
                     }
                     else
@@ -225,7 +232,7 @@ namespace NeuroGen
 
                 // Braking
                 foreach (var wheelCollider in wheelColliders)
-                    wheelCollider.brakeTorque = isBraking ? brakeForce : 0f;
+                    wheelCollider.brakeTorque = brakeControl * brakeForce;
 
                 // Wheel Poses
                 for (int i = 0; i < 4; i++)
@@ -240,9 +247,9 @@ namespace NeuroGen
             }
         }
 
-        void OnTriggerEnter(Collider collider)
+        void OnCollisionEnter(Collision collider)
         {
-            if (collider.gameObject.name == "Stopper" || collider.gameObject.name == "Track")
+            if (collider.gameObject.layer == 9)
                 Stop();
         }
 
