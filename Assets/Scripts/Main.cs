@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace NeuroGen
 {
@@ -10,6 +11,7 @@ namespace NeuroGen
         public CarController car;
         private CarController[] cars;
         public GameObject spawnPoint;
+        public Text speedText;
         void Start()
         {
             Time.timeScale = timeScale;
@@ -40,20 +42,10 @@ namespace NeuroGen
 
         void OnGUI()
         {
-            timeScale = GUI.HorizontalSlider(new Rect(25, 5, 200, 30), timeScale, 1, 100);
+            timeScale = GUI.HorizontalSlider(new Rect(10, 10, 350, 30), timeScale, 1, 100);
 
             Time.timeScale = timeScale;
-
-            // Debug.Log(Time.timeScale);
+            speedText.text = timeScale.ToString("Speed: 0");
         }
-
-        // void OnDrawGizmos()
-        // {
-        // var mesh = track.GetComponent<MeshFilter>().sharedMesh;
-
-        // Gizmos.color = Color.red;
-        // foreach (Vector3 vertex in mesh.vertices)
-        //     Gizmos.DrawSphere(track.transform.TransformPoint(vertex), .1f);
-        // }
     }
 }

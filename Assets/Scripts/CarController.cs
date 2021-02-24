@@ -5,21 +5,27 @@ namespace NeuroGen
 {
     public class CarController : MonoBehaviour
     {
-        public TextMesh fitnessText;
-        public GameObject[] sensors;
-        private bool showSensors = true;
+        [SerializeField] private TextMesh fitnessText;
+        [SerializeField] private GameObject[] sensors;
         private LineRenderer[] sensorLineRenderers;
 
-        public WheelCollider[] wheelColliders;
-        public Transform[] wheelTransforms;
-        public float maxSteeringAngle = 30f;
-        public float motorForce = 1100f;
-        public float brakeForce = 3000f;
-        public bool humanControlled = false;
+        [SerializeField] private WheelCollider[] wheelColliders;
+        [SerializeField] private Transform[] wheelTransforms;
+        [SerializeField] private float maxSteeringAngle = 30f;
+        [SerializeField] private float motorForce = 1100f;
+        [SerializeField] private float brakeForce = 3000f;
+        private bool showSensors = true;
         private float distanceTravelled;
         private float idleTime = 0;
+        public bool humanControlled = false;
         public bool isRunning = false;
-        public float Fitness { get { return distanceTravelled; } }
+        public float Fitness
+        {
+            get
+            {
+                return distanceTravelled;
+            }
+        }
         public float[] SensorValues
         {
             get
@@ -57,7 +63,6 @@ namespace NeuroGen
                 return sensorValues;
             }
         }
-
 
         // Start is called before the first frame update
         void Awake()
@@ -139,6 +144,9 @@ namespace NeuroGen
                     wheelTransforms[i].rotation = rotation;
                     wheelTransforms[i].position = position;
                 }
+
+                // Fitness text
+                fitnessText.text = distanceTravelled.ToString("0.00");
             }
         }
 

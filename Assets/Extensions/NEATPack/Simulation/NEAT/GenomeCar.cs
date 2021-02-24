@@ -7,15 +7,10 @@ public class GenomeCar : GenomeProxy
 {
     #region Fields
     private NeuroGen.CarController carController = null;
-
-    [SerializeField] private Text fitnessText = null;
     public SpriteRenderer speciesColor;
 
     [Header("Raycast stuff")]
     [SerializeField] private LayerMask obstacleLayer = 0;
-    [SerializeField] private Transform raycastOrigin = null;
-    [SerializeField] private Transform[] raycastEndPoints = null;
-
     private int finishCross = 0;
     private Vector3 lastPositionMark;
     private PopulationCar populationCar;
@@ -43,7 +38,6 @@ public class GenomeCar : GenomeProxy
     private void Awake()
     {
         carController = gameObject.GetComponent<NeuroGen.CarController>();
-
         populationCar = FindObjectOfType<PopulationCar>();
     }
 
@@ -51,7 +45,6 @@ public class GenomeCar : GenomeProxy
     {
         ActivateNeuralNet(carController.SensorValues);
         GenomeProperty.Fitness = carController.Fitness;
-        carController.fitnessText.text = GenomeProperty.Fitness.ToString("0.00");
     }
     #endregion
 
@@ -86,72 +79,13 @@ public class GenomeCar : GenomeProxy
         lastMaxFitnessUpdate = Time.time;
     }
 
-    #endregion
-
-    #region Private methods
-    /// <summary>
-    /// Define the car's inputs.
-    /// A for loop can't be used here, since lambda functions are defined.
-    /// The last input is the speed.
-    /// </summary>
-    // private void AssignGenomeInputFunctions()
-    // {
-    //     InputFunctions = new GenomeInputFunction[Popl.Config.inputCount];
-
-    //     for (int i = 0; i < carController.SensorValues.Length; i++)
-    //     {
-    //         // foreach (var value in carController.SensorValues)
-    //         //     Debug.Log(value);
-    //         Debug.Log(carController.SensorValues[0] + ", " + carController.SensorValues[1] + ", " + carController.SensorValues[2] + ", " + carController.SensorValues[3] + ", " + carController.SensorValues[4]);
-
-    //         // InputFunctions[i] = () => carController.SensorValues[i];
-    //         InputFunctions[i] = () => 0;
-    //     }
-    // }
-
     public void Die()
     {
         carController.Stop();
     }
+    #endregion
 
-    // private void ProcessFinihCross()
-    // {
-    //     finishCross++;
-    //     if (finishCross >= CarSettings.Instance.targetFinishCrossTimes)
-    //     {
-    //         var fitnessMult = CarSettings.Instance.finishFitnessMultiplier;
-
-    //         fitnessMult *= Mathf.Lerp(
-    //             1,
-    //             CarSettings.Instance.fitnessMultiplierForBeingFirst,
-    //             1f - (float)(populationCar.theRealFinish.crossedBy.Count) / populationCar.Config.genomeCount
-    //         );
-    //         populationCar.theRealFinish.crossedBy.Add(this);
-
-    //         AddFitness(GenomeProperty.Fitness * fitnessMult);
-    //         Die();
-    //         SaveGenome();
-    //     }
-    // }
-
-    // private void ProcessFitnessPointCross(NeuroGen.Checkpoint checkpoint)
-    // {
-    //     checkpointPassed.Add(checkpoint);
-    //     if (IsDrivingForward())
-    //         AddFitness(checkpoint.fitnessWhenTouched);
-    // }
-
-    // private void ProcessTeleportCross(NeuroGen.Checkpoint checkpoint)
-    // {
-    //     if (!IsDrivingForward())
-    //     {
-    //         Die();
-    //         return;
-    //     }
-
-    //     checkpoint.Teleport(transform);
-    // }
-
+    #region Private methods
     private void SaveGenome()
     {
         var dir = GenomeSaver.DefaultSaveDir + "SavedGenomes\\";
