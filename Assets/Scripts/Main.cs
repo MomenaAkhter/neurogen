@@ -8,8 +8,8 @@ namespace NeuroGen
         public GameObject[] extensions;
         public int selectedExtensionIndex;
         public float timeScale = 5;
-        public CarController car;
-        private CarController[] cars;
+        public CarController carController;
+        private CarController[] carControllers;
         public GameObject spawnPoint;
         public Text speedText;
         void Start()
