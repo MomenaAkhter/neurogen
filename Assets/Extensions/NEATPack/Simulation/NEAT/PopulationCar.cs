@@ -22,7 +22,7 @@ public class PopulationCar : PopulationProxy
     {
         base.Awake();
 
-        if (Main.Instance.spawnPoint == null)
+        if (Main.Instance.defaultTrackSystemInfo.spawnPoint == null)
         {
             Debug.LogError("Car spawn point can't be null");
             Debug.Break();
@@ -35,7 +35,7 @@ public class PopulationCar : PopulationProxy
     private void FixedUpdate()
     {
         var cameraTarget = cars.OrderByDescending(x => x.GenomeProperty.Fitness).FirstOrDefault(x => x.gameObject.activeSelf);
-        cameraFollow.target = cameraTarget == null ? null : cameraTarget.transform;
+        cameraFollow.Target = cameraTarget == null ? null : cameraTarget.transform;
 
         if (EveryoneIsDead)
             Evolve();
@@ -52,10 +52,10 @@ public class PopulationCar : PopulationProxy
     public void ReinitCars()
     {
         foreach (var car in cars)
-            car.Reinit(Main.Instance.spawnPoint);
+            car.Reinit(Main.Instance.defaultTrackSystemInfo.spawnPoint);
 
-        if (Main.Instance.finishPoint != null)
-            Main.Instance.finishPoint.crossedBy.Clear();
+        if (Main.Instance.defaultTrackSystemInfo.finishPoint != null)
+            Main.Instance.defaultTrackSystemInfo.finishPoint.crossedBy.Clear();
     }
 
     public override void Evolve()
@@ -94,7 +94,7 @@ public class PopulationCar : PopulationProxy
         if (cars.FirstOrDefault(x => x.Id == genomeCar.Id) == null)
         {
             cars.Add(genomeCar);
-            genomeCar.Reinit(Main.Instance.spawnPoint);
+            genomeCar.Reinit(Main.Instance.defaultTrackSystemInfo.spawnPoint);
         }
     }
 }

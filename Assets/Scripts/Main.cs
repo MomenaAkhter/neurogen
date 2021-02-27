@@ -9,9 +9,9 @@ namespace NeuroGen
         public int inputCount;
         public int outputCount;
         public GameObject genomePrefab;
-        public Transform spawnPoint;
-        public Checkpoint finishPoint;
         public GameObject[] extensions;
+        public GameObject defaultCamera;
+        public TrackSystemInfo defaultTrackSystemInfo;
         public int selectedExtensionIndex;
         public float timeScale = 5;
         private CarController[] carControllers;
@@ -28,6 +28,8 @@ namespace NeuroGen
         {
             instance = this;
             Time.timeScale = timeScale;
+            defaultCamera.SetActive(true);
+            defaultTrackSystemInfo.gameObject.SetActive(true);
 
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
                 extensions[selectedExtensionIndex].SetActive(true);
