@@ -4,14 +4,12 @@ using UnityEngine;
 using System.Linq;
 using NEAT;
 using UnityEngine.Events;
+using NeuroGen;
 
 public class PopulationCar : PopulationProxy
 {
     [SerializeField] private UnityEvent onGenerationChange = null;
     [SerializeField] private UnityEvent onGenomeStatusChange = null;
-    [SerializeField] private Transform carSpawnPoint = null;
-    public NeuroGen.Checkpoint theRealFinish = null;
-
     public float maxVelocity = 55f;
     public float maxNegativeVelocity = -5f;
 
@@ -24,7 +22,7 @@ public class PopulationCar : PopulationProxy
     {
         base.Awake();
 
-        if (carSpawnPoint == null)
+        if (Main.Instance.spawnPoint == null)
         {
             Debug.LogError("Car spawn point can't be null");
             Debug.Break();
@@ -54,10 +52,10 @@ public class PopulationCar : PopulationProxy
     public void ReinitCars()
     {
         foreach (var car in cars)
-            car.Reinit(carSpawnPoint);
+            car.Reinit(Main.Instance.spawnPoint);
 
-        if (theRealFinish != null)
-            theRealFinish.crossedBy.Clear();
+        if (Main.Instance.finishPoint != null)
+            Main.Instance.finishPoint.crossedBy.Clear();
     }
 
     public override void Evolve()
@@ -96,7 +94,7 @@ public class PopulationCar : PopulationProxy
         if (cars.FirstOrDefault(x => x.Id == genomeCar.Id) == null)
         {
             cars.Add(genomeCar);
-            genomeCar.Reinit(carSpawnPoint);
+            genomeCar.Reinit(Main.Instance.spawnPoint);
         }
     }
 }

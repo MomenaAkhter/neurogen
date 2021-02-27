@@ -2,9 +2,8 @@
 #pragma warning disable 0219 // variable assigned but not used.
 #pragma warning disable 0414 // private field assigned but not used.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using NeuroGen;
 
 namespace NEAT
 {
@@ -16,7 +15,6 @@ namespace NEAT
     {
         #region Fields
         [SerializeField] private NEATConfig config = null;
-        [SerializeField] private GameObject genomeProxyPrefab = null;
         [SerializeField] private Transform genomeProxyStorage = null;
         #endregion
 
@@ -29,6 +27,10 @@ namespace NEAT
         #region Monobehaviour methods
         protected virtual void Awake()
         {
+            config.genomeCount = Main.Instance.genomeCount;
+            config.inputCount = Main.Instance.inputCount;
+            config.outputCount = Main.Instance.outputCount;
+
             InitPopl();
         }
 
@@ -69,9 +71,9 @@ namespace NEAT
                 GameObject obj;
 
                 if (genomeProxyStorage == null)
-                    obj = Instantiate(genomeProxyPrefab).gameObject;
+                    obj = Instantiate(NeuroGen.Main.Instance.genomePrefab).gameObject;
                 else
-                    obj = Instantiate(genomeProxyPrefab, genomeProxyStorage).gameObject;
+                    obj = Instantiate(NeuroGen.Main.Instance.genomePrefab, genomeProxyStorage).gameObject;
 
                 var proxyComponent = obj.AddComponent<GenomeCar>();
                 proxyComponent.Init(i, Popl);

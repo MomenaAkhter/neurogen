@@ -38,13 +38,13 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -1576,7 +1576,7 @@ MonoBehaviour:
   - {fileID: 1403219095}
   selectedExtensionIndex: 1
   timeScale: 5
-  car: {fileID: 0}
+  carController: {fileID: 0}
   spawnPoint: {fileID: 0}
   speedText: {fileID: 896972487}
 --- !u!4 &1983295362
@@ -1661,7 +1661,7 @@ PrefabInstance:
     - target: {fileID: 2511615639314790061, guid: 851b8ee9536e14c65b800270e868a547,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.418821
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2511615639314790061, guid: 851b8ee9536e14c65b800270e868a547,
         type: 3}

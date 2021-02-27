@@ -5,15 +5,28 @@ namespace NeuroGen
 {
     public class Main : MonoBehaviour
     {
+        public int genomeCount;
+        public int inputCount;
+        public int outputCount;
+        public GameObject genomePrefab;
+        public Transform spawnPoint;
+        public Checkpoint finishPoint;
         public GameObject[] extensions;
         public int selectedExtensionIndex;
         public float timeScale = 5;
-        public CarController carController;
         private CarController[] carControllers;
-        public GameObject spawnPoint;
         public Text speedText;
+        private static Main instance = null;
+        public static Main Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
         void Start()
         {
+            instance = this;
             Time.timeScale = timeScale;
 
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
