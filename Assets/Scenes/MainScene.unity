@@ -859,7 +859,7 @@ GameObject:
   - component: {fileID: 1384387826}
   - component: {fileID: 1384387824}
   - component: {fileID: 1384387825}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Finish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -897,7 +897,7 @@ MonoBehaviour:
     m_Bits: 0
   isFinish: 1
   isFitnessPoint: 0
-  fitnessWhenTouched: 0
+  fitnessWhenTouched: 1000
   isTeleport: 0
   teleportPosition: {fileID: 0}
   crossedBy: []
@@ -992,9 +992,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config:
-    genomeCount: 50
-    inputCount: 10
-    outputCount: 2
     weightInitRandomValue: 25
     chanceToDisableGeneIfDisabledInEitherParent: 0.9
     maxStagnation: 20
@@ -1017,8 +1014,6 @@ MonoBehaviour:
       disjointImpact: 1
       weightMeanDifCoef: 0.6
       threshold: 0.22
-  genomeProxyPrefab: {fileID: 6388864814560160043, guid: 56b4c177a3fd142e9946fd7ad64bf59c,
-    type: 3}
   genomeProxyStorage: {fileID: 1216239831}
   onGenerationChange:
     m_PersistentCalls:
@@ -1026,8 +1021,6 @@ MonoBehaviour:
   onGenomeStatusChange:
     m_PersistentCalls:
       m_Calls: []
-  carSpawnPoint: {fileID: 1958405388}
-  theRealFinish: {fileID: 1384387824}
   maxVelocity: 20
   maxNegativeVelocity: 0
 --- !u!4 &1403219097
@@ -1571,13 +1564,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06171ba5387164c189f14b72349473a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  genomeCount: 50
+  inputCount: 10
+  outputCount: 2
+  genomePrefab: {fileID: 6388864814560160043, guid: 56b4c177a3fd142e9946fd7ad64bf59c,
+    type: 3}
+  spawnPoint: {fileID: 1958405388}
+  finishPoint: {fileID: 1384387824}
   extensions:
   - {fileID: 2082197339}
   - {fileID: 1403219095}
   selectedExtensionIndex: 1
   timeScale: 5
-  carController: {fileID: 0}
-  spawnPoint: {fileID: 0}
   speedText: {fileID: 896972487}
 --- !u!4 &1983295362
 Transform:
