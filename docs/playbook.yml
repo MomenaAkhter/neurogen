@@ -1,0 +1,12 @@
+site:
+  title: NeuroGen Docs
+  start_page: NeuroGen::index.adoc
+content:
+  sources:
+    - url: ./src/docs
+ui:
+  bundle:
+    url: ./ui/build/ui-bundle.zip
+  supplemental_files: ./supplemental_ui
+output:
+  dir: ../
