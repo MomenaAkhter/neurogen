@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Creating an Extension :: NeuroGen Docs</title>
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link rel="stylesheet" href="../../../_/css/search.css">
+  </head>
+
+  <body class="article">
+    <header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../../../index.html">NeuroGen Docs</a>
+      <div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search docs">
+      </div>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="../../../index.html">Home</a>
+      </div>
+    </div>
+  </nav>
+</header>
+    <div class="body">
+<div class="nav-container" data-component="NeuroGen" data-version="0.1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">NeuroGen</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Introduction</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Core</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../core/main.html">Main Script</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Extensions</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">Introduction</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="extension_creation.html">Creating an Extension</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#neat_pack.adoc">NEATPack</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#unity_neat.adoc">UnityNEAT</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NeuroGen</span>
+    <span class="version">0.1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">NeuroGen</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">0.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+  <button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+  <nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NeuroGen</a></li>
+    <li>Extensions</li>
+    <li><a href="extension_creation.html">Creating an Extension</a></li>
+  </ul>
+</nav>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Creating an Extension</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creating a NeuroGen extension is easy and straightforward. Proceed by following the tasks below sequentially:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_extensions_gameobject"><a class="anchor" href="#_extensions_gameobject"></a>Extension&#8217;s GameObject</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Your extension must have at least one <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> that holds all the scripts required for initiating training. It must be deactivated by default and should only be activated by the core of NeuroGen, not by the extension itself.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_registering_the_extension_in_the_core"><a class="anchor" href="#_registering_the_extension_in_the_core"></a>Registering the Extension in the Core</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>NeuroGen initiates all its operations through the <a href="../core/main.html" class="page">Main module</a>. This module holds and activates the GameObject of the selected extension automatically. However, to let the Main module do so, you need to add the extension&#8217;s GameObject to the list of extensions in the Main module. This way, the core of NeuroGen, which the Main module is part of, is aware of the extension&#8217;s existence.</p>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+    <script>
+  window.antora = window.antora || {}
+  window.antora.basePath = '../../..'
+  window.antora.pagePath = '/NeuroGen/0.1/extensions/extension_creation.html'
+</script>
+<script src="../../../_/js/site.js"></script>
+<script src="../../../_/js/vendor/lunr.js"></script>
+<script src="../../../_/js/vendor/search.js"></script>
+<script async src="../../../_/../search-index.js"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+
+</html>

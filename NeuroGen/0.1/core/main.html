@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Main Module :: NeuroGen Docs</title>
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link rel="stylesheet" href="../../../_/css/search.css">
+  </head>
+
+  <body class="article">
+    <header class="header" role="banner">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../../../index.html">NeuroGen Docs</a>
+      <div class="navbar-item">
+        <input id="search-input" type="text" placeholder="Search docs">
+      </div>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="../../../index.html">Home</a>
+      </div>
+    </div>
+  </nav>
+</header>
+    <div class="body">
+<div class="nav-container" data-component="NeuroGen" data-version="0.1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">NeuroGen</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Introduction</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Core</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="main.html">Main Script</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Extensions</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../extensions/index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../extensions/extension_creation.html">Creating an Extension</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#neat_pack.adoc">NEATPack</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#unity_neat.adoc">UnityNEAT</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">NeuroGen</span>
+    <span class="version">0.1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">NeuroGen</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">0.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+  <button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+  <nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">NeuroGen</a></li>
+    <li>Core</li>
+    <li><a href="main.html">Main Script</a></li>
+  </ul>
+</nav>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Main Module</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>NeuroGen begins all its operations from one module, <strong>Main</strong>.</p>
+</div>
+<div class="paragraph">
+<p>It abides by the <a href="https://en.wikipedia.org/wiki/Singleton_pattern">Singleton Pattern</a>, making it convenient to access its instance from any part of the simulator.</p>
+</div>
+<div class="paragraph">
+<p>The Main module initiates the training of cars by activating the selected extension, which is set at compile time.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_attributes"><a class="anchor" href="#_attributes"></a>Attributes</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Genome Count (quantity of cars)</p>
+</li>
+<li>
+<p>Input count (from the sensors of each car)</p>
+</li>
+<li>
+<p>Output count (for controlling each car)</p>
+</li>
+<li>
+<p>Genome Prefab (<a href="https://docs.unity3d.com/Manual/Prefabs.html">prefab</a> representing a car)</p>
+</li>
+<li>
+<p>Extensions List</p>
+</li>
+<li>
+<p>Default Camera</p>
+</li>
+<li>
+<p>Default Track Information</p>
+</li>
+<li>
+<p>Selected Extension Index</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+    <script>
+  window.antora = window.antora || {}
+  window.antora.basePath = '../../..'
+  window.antora.pagePath = '/NeuroGen/0.1/core/main.html'
+</script>
+<script src="../../../_/js/site.js"></script>
+<script src="../../../_/js/vendor/lunr.js"></script>
+<script src="../../../_/js/vendor/search.js"></script>
+<script async src="../../../_/../search-index.js"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+
+</html>
