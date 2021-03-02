@@ -1,0 +1,6 @@
+name: NeuroGen
+version: 0.1
+nav:
+  - modules/ROOT/nav.adoc
+  - modules/core/nav.adoc
+  - modules/extensions/nav.adoc

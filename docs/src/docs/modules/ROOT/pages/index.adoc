@@ -1,0 +1,42 @@
+= NeuroGen
+
+NeuroGen is an open-source, extensible, and modular evolution simulator primarily built for self-driving cars. It's based on Unity and written with C#.
+
+It supports persistent storage of genomes using database libraries like https://www.sqlite.org/index.html[SQLite 3]. The database layer is written in C/C++ as a library, which is imported into the Unity project as a https://docs.unity3d.com/Manual/NativePlugins.html[native plugin].
+
+Entire source code is hosted on GitHub in this https://github.com/MomenaAkhter/neurogen[repository].
+
+== Built-in Extensions:
+
+* NEATPack
+* UnityNEAT
+
+== Credits
+
+* https://github.com/MomenaAkhter[Momena Akhter Shukhi] for development. 
+
+// == Features
+
+// * Simulate evolution of custom entities
+// * Define custom environment for simulation
+// * Save progress of evolution after every generation
+// * Control vital variables of evolution
+// ** Mutation rate
+// ** Speed
+// ** Population size
+// * Web Portal
+// ** Track sessions
+// ** Track generations
+// ** View scores at every saved state
+
+// == Notes
+
+// * *SimpleExperiment* connects *UnityParallelEvaluator* with *SimpleEvaluator*. It also connects the *Optimizer* with both of the evaluators.
+
+// * *AbstractGenerationalAlgorithm* holds *AlgorithmThreadMethod*, which manages the evolution at the ground level.
+
+// * *NeatEvolutionAlgorithm*, which inherits *AbstractGenerationalAlgorithm*, performs each generation.
+
+// * In each generation, *UnityParallelListEvaluator* is used as genome list evaluator.
+
+// * *UnityParallelListEvaluator* uses SimpleEvaluator as evaluator.

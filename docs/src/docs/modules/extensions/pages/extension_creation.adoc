@@ -1,0 +1,11 @@
+= Creating an Extension
+
+Creating a NeuroGen extension is easy and straightforward. Proceed by following the tasks below sequentially:
+
+== Extension's GameObject
+
+Your extension must have at least one https://docs.unity3d.com/ScriptReference/GameObject.html[GameObject] that holds all the scripts required for initiating training. It must be deactivated by default and should only be activated by the core of NeuroGen, not by the extension itself.
+
+== Registering the Extension in the Core
+
+NeuroGen initiates all its operations through the xref:core:main.adoc[Main module]. This module holds and activates the GameObject of the selected extension automatically. However, to let the Main module do so, you need to add the extension's GameObject to the list of extensions in the Main module. This way, the core of NeuroGen, which the Main module is part of, is aware of the extension's existence.
