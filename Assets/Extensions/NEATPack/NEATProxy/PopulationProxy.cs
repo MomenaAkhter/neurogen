@@ -71,9 +71,9 @@ namespace NEAT
                 GameObject obj;
 
                 if (genomeProxyStorage == null)
-                    obj = Instantiate(NeuroGen.Main.Instance.genomePrefab).gameObject;
+                    obj = Instantiate(NeuroGen.Main.Instance.carPrefab).gameObject;
                 else
-                    obj = Instantiate(NeuroGen.Main.Instance.genomePrefab, genomeProxyStorage).gameObject;
+                    obj = Instantiate(NeuroGen.Main.Instance.carPrefab, genomeProxyStorage).gameObject;
 
                 var proxyComponent = obj.AddComponent<GenomeCar>();
                 proxyComponent.Init(i, Popl);
