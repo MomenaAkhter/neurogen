@@ -171,6 +171,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &431017402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 431017404}
+  - component: {fileID: 431017403}
+  m_Layer: 0
+  m_Name: Dawkins
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &431017403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431017402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c6e46bfb902e4c19a3120d0e26643f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &431017404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431017402}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 583963877}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &583963876
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,6 +243,7 @@ Transform:
   m_Children:
   - {fileID: 1189165192}
   - {fileID: 1246592498}
+  - {fileID: 431017404}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1211,11 +1255,11 @@ MonoBehaviour:
   genomeCount: 50
   inputCount: 10
   outputCount: 2
-  genomePrefab: {fileID: 6388864814560160043, guid: 56b4c177a3fd142e9946fd7ad64bf59c,
-    type: 3}
+  carPrefab: {fileID: 0}
   extensions:
   - {fileID: 1189165191}
   - {fileID: 1246592497}
+  - {fileID: 431017402}
   defaultCamera: {fileID: 963194225}
   defaultTrackSystemInfo: {fileID: 18437376}
   selectedExtensionIndex: 1
