@@ -6,6 +6,8 @@ It abides by the https://en.wikipedia.org/wiki/Singleton_pattern[Singleton Patte
 
 The Main module initiates the training of cars by activating the selected extension, with the selection set at compile time.
 
+The module also handles loading https://docs.unity3d.com/Manual/NativePlugins.html[native plugins] of Unity, handling connections with native libraries such as SQLite 3.
+
 == Attributes
 
 * Genome Count (quantity of cars)

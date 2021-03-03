@@ -8,8 +8,8 @@ Entire source code is hosted on GitHub in this https://github.com/MomenaAkhter/n
 
 == Built-in Extensions:
 
-* NEATPack
-* UnityNEAT
+* xref:extensions:neat_pack.adoc[NEATPack]
+* xref:extensions:unity_neat.adoc[UnityNEAT]
 
 == Credits
 
