@@ -1,11 +1,56 @@
 = Creating an Extension
 
-Creating a NeuroGen extension is easy and straightforward. Proceed by following the tasks below sequentially:
+Creating a NeuroGen extension is easy and straightforward. Let's assume that the extension we're creating is named `Dawkins`. Proceed by following the tasks below sequentially:
 
-== Extension's GameObject
+== Creating the Extension's Main GameObject
 
-Your extension must have at least one https://docs.unity3d.com/ScriptReference/GameObject.html[GameObject] that holds all the scripts required for initiating training. It must be deactivated by default and should only be activated by the core of NeuroGen, not by the extension itself.
+Your extension must have at least one https://docs.unity3d.com/ScriptReference/GameObject.html[GameObject] that holds all the scripts required for initiating training - it's known as the extension's main GameObject. It must be deactivated by default and should only be activated by the core of NeuroGen, not by the extension itself.
+
+[NOTE]
+Conventionally, the name of the extension's main GameObject is kept the same as the extension itself.
+
+The main GameObject may look something like this:
+
+image:extension_game_object.png[]
+
+[NOTE]
+Conventionally, the GameObject representing the extension is kept as the child of a GameObject named `Extensions` in the MainScene.
+
+image:extension_game_object_hierarchy.png[]
 
 == Registering the Extension in the Core
 
 NeuroGen initiates all its operations through the xref:core:main.adoc[Main module]. This module holds and activates the GameObject of the selected extension automatically. However, to let the Main module do so, you need to add the extension's GameObject to the list of extensions in the Main module. This way, the core of NeuroGen, which the Main module is part of, is aware of the extension's existence.
+
+This is how the "Extensions" list of the Main module looks like after `Dawkins` is added:
+
+image:extensions_list.png[]
+
+== Writing the Scripts
+
+All the scripts associated with the extension conventionally reside in its own directory in the `/Assets/Extensions` directory, where the leading forward-slash indicates the root of NeuroGen's source directory.
+
+This is how the `/Assets/Extensions` directory may look like after creating a directory for `Dawkins`:
+
+image:extensions_directory.png[]
+
+[NOTE]
+It's recommended to wrap all the scripts of your extension in its own namespace. Whilst naming a namespace, make sure it has least possibility of any https://en.wikipedia.org/wiki/Naming_collision[naming collision]. 
+
+Since the extension's main GameObject is activated when the extension is selected to take control of the training, all the scripts that must run to initiate training should be attached to it as its components.
+
+For `Dawkins`, let's create a script called `Trainer` and keep it inside the `/Assets/Extensions/Dawkins` directory:
+
+image:trainer_script_directory.png[]
+
+This is how the contents of the script may look like:
+
+image:trainer_script_content.png[]
+
+Let's attach it to the extension's main GameObject so its `Start` method gets invoked whenever the extension is activated. This is where we can write code to begin the training:
+
+image:attaching_trainer_script.png[]
+
+== Conclusion
+
+Now we have the foundation of our extension, you can develop it to train cars, however you like, based on your algorithm.

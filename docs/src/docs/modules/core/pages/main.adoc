@@ -4,7 +4,7 @@ NeuroGen begins all its operations from one module, *Main*.
 
 It abides by the https://en.wikipedia.org/wiki/Singleton_pattern[Singleton Pattern], making it convenient to access its instance from any part of the simulator.
 
-The Main module initiates the training of cars by activating the selected extension, which is set at compile time.
+The Main module initiates the training of cars by activating the selected extension, with the selection set at compile time.
 
 == Attributes
 

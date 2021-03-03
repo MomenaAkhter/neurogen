@@ -54,7 +54,7 @@
     <span class="nav-text">Core</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="../core/main.html">Main Script</a>
+    <a class="nav-link" href="../core/main.html">Main Module</a>
   </li>
 </ul>
   </li>
@@ -122,15 +122,48 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Creating a NeuroGen extension is easy and straightforward. Proceed by following the tasks below sequentially:</p>
+<p>Creating a NeuroGen extension is easy and straightforward. Let&#8217;s assume that the extension we&#8217;re creating is named <code>Dawkins</code>. Proceed by following the tasks below sequentially:</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_extensions_gameobject"><a class="anchor" href="#_extensions_gameobject"></a>Extension&#8217;s GameObject</h2>
+<h2 id="_creating_the_extensions_main_gameobject"><a class="anchor" href="#_creating_the_extensions_main_gameobject"></a>Creating the Extension&#8217;s Main GameObject</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Your extension must have at least one <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> that holds all the scripts required for initiating training. It must be deactivated by default and should only be activated by the core of NeuroGen, not by the extension itself.</p>
+<p>Your extension must have at least one <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> that holds all the scripts required for initiating training - it&#8217;s known as the extension&#8217;s main GameObject. It must be deactivated by default and should only be activated by the core of NeuroGen, not by the extension itself.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Conventionally, the name of the extension&#8217;s main GameObject is kept the same as the extension itself.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The main GameObject may look something like this:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/extension_game_object.png" alt="extension game object"></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Conventionally, the GameObject representing the extension is kept as the child of a GameObject named <code>Extensions</code> in the MainScene.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/extension_game_object_hierarchy.png" alt="extension game object hierarchy"></span></p>
 </div>
 </div>
 </div>
@@ -139,6 +172,67 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>NeuroGen initiates all its operations through the <a href="../core/main.html" class="page">Main module</a>. This module holds and activates the GameObject of the selected extension automatically. However, to let the Main module do so, you need to add the extension&#8217;s GameObject to the list of extensions in the Main module. This way, the core of NeuroGen, which the Main module is part of, is aware of the extension&#8217;s existence.</p>
+</div>
+<div class="paragraph">
+<p>This is how the "Extensions" list of the Main module looks like after <code>Dawkins</code> is added:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/extensions_list.png" alt="extensions list"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_writing_the_scripts"><a class="anchor" href="#_writing_the_scripts"></a>Writing the Scripts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All the scripts associated with the extension conventionally reside in its own directory in the <code>/Assets/Extensions</code> directory, where the leading forward-slash indicates the root of NeuroGen&#8217;s source directory.</p>
+</div>
+<div class="paragraph">
+<p>This is how the <code>/Assets/Extensions</code> directory may look like after creating a directory for <code>Dawkins</code>:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/extensions_directory.png" alt="extensions directory"></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It&#8217;s recommended to wrap all the scripts of your extension in its own namespace. Whilst naming a namespace, make sure it has least possibility of any <a href="https://en.wikipedia.org/wiki/Naming_collision">naming collision</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Since the extension&#8217;s main GameObject is activated when the extension is selected to take control of the training, all the scripts that must run to initiate training should be attached to it as its components.</p>
+</div>
+<div class="paragraph">
+<p>For <code>Dawkins</code>, let&#8217;s create a script called <code>Trainer</code> and keep it inside the <code>/Assets/Extensions/Dawkins</code> directory:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/trainer_script_directory.png" alt="trainer script directory"></span></p>
+</div>
+<div class="paragraph">
+<p>This is how the contents of the script may look like:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/trainer_script_content.png" alt="trainer script content"></span></p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s attach it to the extension&#8217;s main GameObject so its <code>Start</code> method gets invoked whenever the extension is activated. This is where we can write code to begin the training:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="_images/attaching_trainer_script.png" alt="attaching trainer script"></span></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_conclusion"><a class="anchor" href="#_conclusion"></a>Conclusion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now we have the foundation of our extension, you can develop it to train cars, however you like, based on your algorithm.</p>
 </div>
 </div>
 </div>
