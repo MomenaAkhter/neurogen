@@ -8,7 +8,7 @@ namespace NeuroGen
         public int genomeCount;
         public int inputCount;
         public int outputCount;
-        public GameObject genomePrefab;
+        public GameObject carPrefab;
         public GameObject[] extensions;
         public GameObject defaultCamera;
         public TrackSystemInfo defaultTrackSystemInfo;
@@ -17,13 +17,7 @@ namespace NeuroGen
         private CarController[] carControllers;
         public Text speedText;
         private static Main instance = null;
-        public static Main Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static Main Instance { get { return instance; } }
         void Start()
         {
             instance = this;
