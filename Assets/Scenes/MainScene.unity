@@ -1255,7 +1255,8 @@ MonoBehaviour:
   genomeCount: 50
   inputCount: 10
   outputCount: 2
-  carPrefab: {fileID: 0}
+  carPrefab: {fileID: 6388864814560160043, guid: 56b4c177a3fd142e9946fd7ad64bf59c,
+    type: 3}
   extensions:
   - {fileID: 1189165191}
   - {fileID: 1246592497}

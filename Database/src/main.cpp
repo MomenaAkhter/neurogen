@@ -1,6 +1,6 @@
-#include <iostream>
 #include "main.h"
 #include "sqlite3/sqlite3.h"
+#include <iostream>
 
 using namespace std;
 
@@ -25,17 +25,13 @@ extern "C" int getExtensionId(const char *name)
 {
     sqlite3_stmt *statement;
     if (sqlite3_prepare(handle, "SELECT id FROM extensions WHERE name=?;", -1, &statement, NULL) == SQLITE_OK)
-    {
         if (sqlite3_bind_text(statement, 1, name, -1, NULL) == SQLITE_OK)
-        {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 int extension_id = sqlite3_column_int(statement, 0);
                 if (sqlite3_finalize(statement) == SQLITE_OK)
                     return extension_id;
             }
-        }
-    }
 
     return 0;
 }
