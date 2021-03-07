@@ -2,6 +2,11 @@
 #include "sqlite3/sqlite3.h"
 #include <iostream>
 #include <cstring>
+#define TABLES_CREATION_SQL "CREATE TABLE IF NOT EXISTS models (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL, extension_id INT NOT NULL, fitness FLOAT(12) NOT NULL, FOREIGN KEY (extension_id) REFERENCES extensions(id)); CREATE TABLE IF NOT EXISTS extensions (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255) NOT NULL UNIQUE)"
+#define TABLE_SEED_SQL "INSERT INTO extensions (name) VALUES('unity-neat'); INSERT INTO extensions (name) VALUES('neat-pack')"
+#define TABLES_DROP_SQL "DROP TABLE IF EXISTS models; DROP TABLE IF EXISTS extensions"
+#define TABLES_RESET_SQL TABLES_DROP_SQL "; " TABLES_CREATION_SQL "; " TABLE_SEED_SQL
+#define TABLES_CREATE_AND_SEED_SQL TABLES_CREATION_SQL "; " TABLE_SEED_SQL
 
 using namespace std;
 
@@ -15,6 +20,14 @@ extern "C" int GetSqliteVersion()
 extern "C" int Connect(const char *path)
 {
     return sqlite3_open(path, &handle);
+}
+
+extern "C" int ConnectAndSetup(const char *path)
+{
+    if (sqlite3_open(path, &handle) == SQLITE_OK)
+        return sqlite3_exec(handle, TABLES_CREATE_AND_SEED_SQL, NULL, NULL, NULL);
+
+    return SQLITE_ERROR;
 }
 
 extern "C" int Disconnect()
@@ -39,7 +52,7 @@ extern "C" int GetExtensionId(const char *name)
 
 extern "C" int ResetTables()
 {
-    return sqlite3_exec(handle, "DROP TABLE IF EXISTS models; DROP TABLE IF EXISTS extensions; CREATE TABLE models (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL, extension_id INT NOT NULL, fitness FLOAT(12) NOT NULL, FOREIGN KEY (extension_id) REFERENCES extensions(id)); CREATE TABLE extensions (id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255) NOT NULL UNIQUE); INSERT INTO extensions (name) VALUES('unity-neat'); INSERT INTO extensions (name) VALUES('neat-pack')", NULL, NULL, NULL);
+    return sqlite3_exec(handle, TABLES_RESET_SQL, NULL, NULL, NULL);
 }
 
 extern "C" int AddModel(const char *content, const char *extension_name, float fitness)

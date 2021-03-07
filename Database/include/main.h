@@ -16,6 +16,7 @@ struct ModelCollection
 
 extern "C" int GetSqliteVersion();
 extern "C" int Connect(const char *path);
+extern "C" int ConnectAndSetup(const char *path);
 extern "C" int Disconnect();
 extern "C" int GetExtensionId(const char *);
 extern "C" int ResetTables();

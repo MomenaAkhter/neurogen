@@ -52,6 +52,11 @@ TEST(ConnectionTest, DisconnectsProperly)
     ASSERT_EQ(SQLITE_OK, Disconnect());
 }
 
+TEST_F(DataBasedTest, ConnectsAndSetsUp)
+{
+    ASSERT_EQ(SQLITE_CONSTRAINT, ConnectAndSetup(DB_PATH));
+}
+
 TEST_F(QueryTest, ResetsTables)
 {
     ASSERT_EQ(SQLITE_OK, ResetTables());
