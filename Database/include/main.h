@@ -1,6 +1,8 @@
 #ifndef __MAIN_H__
 #define __MAIN_H__
 
+#include <string>
+
 struct Model
 {
     const char *content;
@@ -10,20 +12,23 @@ struct Model
 
 struct ModelCollection
 {
-    Model *models;
+    Model **models;
     int size;
 };
 
-extern "C" int GetSqliteVersion();
-extern "C" int Connect(const char *path);
-extern "C" int ConnectAndSetup(const char *path);
-extern "C" int Disconnect();
-extern "C" int GetExtensionId(const char *);
-extern "C" int ResetTables();
-extern "C" int AddModel(const char *, const char *, float);
-extern "C" Model GetModel(int);
-extern "C" ModelCollection GetBestModels(int);
-extern "C" void DeleteCollection(ModelCollection &);
-extern "C" void DeleteModel(Model &);
+extern "C"
+{
+    int GetSqliteVersion();
+    int Connect(const char *path);
+    int ConnectAndSetup(const char *path);
+    int Disconnect();
+    int GetExtensionId(const char *);
+    int ResetTables();
+    int AddModel(const char *, const char *, float);
+    Model *GetModel(int);
+    ModelCollection *GetBestModels(int);
+    void DeleteCollection(ModelCollection *);
+    void DeleteModel(Model *);
+}
 
 #endif // __MAIN_H__
