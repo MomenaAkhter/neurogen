@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NEAT;
-using UnityEngine.UI;
+using NeuroGen;
 
 public class GenomeCar : GenomeProxy
 {
@@ -21,17 +21,7 @@ public class GenomeCar : GenomeProxy
     private List<NeuroGen.Checkpoint> checkpointPassed = new List<NeuroGen.Checkpoint>();
 
     public override bool IsDone
-    {
-        get
-        {
-            return !carController.isRunning;
-        }
-
-        set
-        {
-            carController.isRunning = !value;
-        }
-    }
+    { get { return !carController.isRunning; } set { carController.isRunning = !value; } }
     #endregion
 
     #region Monobehaviour
@@ -83,23 +73,27 @@ public class GenomeCar : GenomeProxy
     {
         carController.Stop();
     }
+
+    public void SaveGenome()
+    {
+        // var dir = GenomeSaver.DefaultSaveDir + "SavedGenomes\\";
+        // if (!System.IO.Directory.Exists(dir))
+        //     System.IO.Directory.CreateDirectory(dir);
+
+        // var filePath = GenomeSaver.GenerateSaveFilePath(
+        //     dir, GenomeProperty.Fitness, populationCar.Popl.Generation
+        // );
+
+        // GenomeSaver.SaveGenome(
+        //     GenomeProperty,
+        //     filePath
+        // );
+
+        Database.AddModel(new PackedGenome(GenomeProperty), Main.Instance.selectedExtensionId, carController.Fitness);
+    }
     #endregion
 
     #region Private methods
-    private void SaveGenome()
-    {
-        var dir = GenomeSaver.DefaultSaveDir + "SavedGenomes\\";
-        if (!System.IO.Directory.Exists(dir))
-            System.IO.Directory.CreateDirectory(dir);
 
-        var filePath = GenomeSaver.GenerateSaveFilePath(
-            dir, GenomeProperty.Fitness, populationCar.Popl.Generation
-        );
-
-        GenomeSaver.SaveGenome(
-            GenomeProperty,
-            filePath
-        );
-    }
     #endregion
 }

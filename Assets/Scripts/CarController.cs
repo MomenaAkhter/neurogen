@@ -19,13 +19,7 @@ namespace NeuroGen
         private float idleTime = 0;
         public bool humanControlled = false;
         public bool isRunning = false;
-        public float Fitness
-        {
-            get
-            {
-                return distanceTravelled;
-            }
-        }
+        public float Fitness { get { return distanceTravelled; } }
         public float[] SensorValues
         {
             get

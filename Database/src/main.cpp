@@ -57,10 +57,8 @@ extern "C"
         return sqlite3_exec(handle, TABLES_RESET_SQL, NULL, NULL, NULL);
     }
 
-    int AddModel(const char *content, const char *extension_name, float fitness)
+    int AddModel(const char *content, int extension_id, float fitness)
     {
-        int extension_id = GetExtensionId(extension_name);
-
         if (extension_id != 0)
         {
             sqlite3_stmt *statement;

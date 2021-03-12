@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using CaseExtensions;
 
 namespace NeuroGen
 {
@@ -13,6 +14,7 @@ namespace NeuroGen
         public GameObject defaultCamera;
         public TrackSystemInfo defaultTrackSystemInfo;
         public int selectedExtensionIndex;
+        public int selectedExtensionId;
         public float timeScale = 5;
         private CarController[] carControllers;
         public Text speedText;
@@ -25,8 +27,20 @@ namespace NeuroGen
             defaultCamera.SetActive(true);
             defaultTrackSystemInfo.gameObject.SetActive(true);
 
+            Database.ConnectAndSetup(Application.persistentDataPath + "/db.sqlite");
+            // Database.AddModel("Fuck", "neat-pack", 5.6f);
+            // IntPtr modelPtr = Database.GetModel(1);
+            // Model model = (Model)Marshal.PtrToStructure(modelPtr, typeof(Model));
+            // Debug.Log(model.content);
+            // Debug.Log(model.fitness);
+            // Database.DeleteModel(modelPtr);
+
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
-                extensions[selectedExtensionIndex].SetActive(true);
+            {
+                var extensionMainObject = extensions[selectedExtensionIndex];
+                extensionMainObject.SetActive(true);
+                selectedExtensionId = Database.GetExtensionId(extensionMainObject.name.ToKebabCase());
+            }
 
             // int count = 1;
             // cars = new CarController[count];

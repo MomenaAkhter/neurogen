@@ -602,7 +602,7 @@ GameObject:
   - component: {fileID: 1189165192}
   - component: {fileID: 1189165193}
   m_Layer: 0
-  m_Name: UnityNEAT
+  m_Name: UnityNeat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -680,7 +680,7 @@ GameObject:
   - component: {fileID: 1246592498}
   - component: {fileID: 1246592499}
   m_Layer: 0
-  m_Name: NEATPack
+  m_Name: NeatPack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1264,6 +1264,7 @@ MonoBehaviour:
   defaultCamera: {fileID: 963194225}
   defaultTrackSystemInfo: {fileID: 150119094}
   selectedExtensionIndex: 1
+  selectedExtensionId: 0
   timeScale: 5
   speedText: {fileID: 896972487}
 --- !u!4 &1983295362

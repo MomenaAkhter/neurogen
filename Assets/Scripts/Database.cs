@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using System;
+using UnityEngine;
 
 namespace NeuroGen
 {
@@ -39,7 +40,12 @@ namespace NeuroGen
 #else
         [DllImport("Database")]
 #endif
-        public static extern int AddModel(string content, string extensionName, float fitness);
+        public static extern int AddModel(string content, int extensionId, float fitness);
+
+        public static void AddModel(object model, int extensionId, float fitness)
+        {
+            AddModel(JsonUtility.ToJson(model), extensionId, fitness);
+        }
 
 #if UNITY_IPHONE
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
@@ -54,5 +60,12 @@ namespace NeuroGen
         [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
 #endif
         public static extern void DeleteModel(IntPtr model);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        public static extern int GetExtensionId(string name);
     }
 }

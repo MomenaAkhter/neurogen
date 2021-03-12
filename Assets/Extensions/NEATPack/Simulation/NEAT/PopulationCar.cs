@@ -60,11 +60,17 @@ public class PopulationCar : PopulationProxy
 
     public override void Evolve()
     {
+        // Display fitness values of the entire population
         string text = "Population fitnesses: ";
 
         List<float> fitnessValues = new List<float>();
         foreach (var car in cars)
+        {
             fitnessValues.Add(car.GenomeProperty.Fitness);
+
+            // Save genome
+            car.SaveGenome();
+        }
 
         fitnessValues.Sort((x, y) => -x.CompareTo(y));
 

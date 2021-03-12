@@ -24,7 +24,7 @@ extern "C"
     int Disconnect();
     int GetExtensionId(const char *);
     int ResetTables();
-    int AddModel(const char *, const char *, float);
+    int AddModel(const char *, int, float);
     Model *GetModel(int);
     ModelCollection *GetBestModels(int);
     void DeleteCollection(ModelCollection *);
