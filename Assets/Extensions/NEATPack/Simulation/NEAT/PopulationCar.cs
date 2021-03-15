@@ -64,6 +64,9 @@ public class PopulationCar : PopulationProxy
     {
         int extensionId = Main.Instance.selectedExtensionId;
 
+        // Sort the cars based on fitness in descending order
+        cars.Sort((x, y) => -x.GenomeProperty.Fitness.CompareTo(y.GenomeProperty.Fitness));
+
         // Get fitness values of best fit models
         List<Model> models = Database.GetBestModels(Main.Instance.bestModelsCount, extensionId);
         float topModelsFitnessMinValue = 0;
@@ -72,21 +75,14 @@ public class PopulationCar : PopulationProxy
 
         // Display fitness values of the entire population
         string text = "Population fitnesses: ";
-
-        List<float> fitnessValues = new List<float>();
         foreach (var car in cars)
         {
-            fitnessValues.Add(car.GenomeProperty.Fitness);
+            text += car.GenomeProperty.Fitness + " ";
 
             // Save genome
-            if (car.GenomeProperty.Fitness > topModelsFitnessMinValue)
+            if (car.GenomeProperty.Fitness > topModelsFitnessMinValue || models.Count < Main.Instance.bestModelsCount)
                 car.SaveGenome();
         }
-
-        fitnessValues.Sort((x, y) => -x.CompareTo(y));
-
-        foreach (var fitnessValue in fitnessValues)
-            text += fitnessValue + " ";
         Debug.Log(text);
 
         // Trim the models table for the current extension
