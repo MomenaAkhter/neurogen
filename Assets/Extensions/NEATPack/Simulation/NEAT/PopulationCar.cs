@@ -65,18 +65,10 @@ public class PopulationCar : PopulationProxy
         int extensionId = Main.Instance.selectedExtensionId;
 
         // Get fitness values of best fit models
-        IntPtr collectionPtr = Database.GetBestModels(5, extensionId);
-        ModelCollection collection = Marshal.PtrToStructure<ModelCollection>(collectionPtr);
-
+        List<Model> models = Database.GetBestModels(5, extensionId);
         float topModelsFitnessMinValue = 0;
-        if (collection.size > 0)
-        {
-            IntPtr[] modelPointers = new IntPtr[collection.size];
-            Marshal.Copy(collection.models, modelPointers, 0, collection.size);
-
-            topModelsFitnessMinValue = Marshal.PtrToStructure<Model>(modelPointers[collection.size - 1]).fitness;
-        }
-        Database.UnloadCollection(collectionPtr);
+        if (models.Count > 0)
+            topModelsFitnessMinValue = models[models.Count - 1].fitness;
 
         // Display fitness values of the entire population
         string text = "Population fitnesses: ";

@@ -32,8 +32,8 @@ namespace NeuroGen
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
             {
                 var extensionMainObject = extensions[selectedExtensionIndex];
-                extensionMainObject.SetActive(true);
                 selectedExtensionId = Database.GetExtensionId(extensionMainObject.name.ToKebabCase());
+                extensionMainObject.SetActive(true);
             }
 
             // int count = 1;

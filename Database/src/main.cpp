@@ -102,7 +102,7 @@ extern "C"
         return model;
     }
 
-    ModelCollection *GetBestModels(int count, int extension_id)
+    ModelCollection *GetBestModelsCollection(int count, int extension_id)
     {
         vector<Model *> models;
         int size = 0;

@@ -25,7 +25,7 @@ namespace NEAT
         #endregion
 
         #region Constructors and Destructors
-        public Population(int genomeCount, int inCount, int outCount, NEATConfig config)
+        public Population(int genomeCount, int inCount, int outCount, NEATConfig config, List<Genome> genomes = null)
         {
             SpeciesCtrl = new SpeciesControl();
             GenomeCount = genomeCount;
@@ -33,8 +33,15 @@ namespace NEAT
             OutputCount = outCount;
             Config = config;
 
-            Genomes = new List<Genome>(GenomeCount);
-            Populate();
+            if (genomes == null || genomes.Count == 0)
+            {
+                Genomes = new List<Genome>(GenomeCount);
+                Populate();
+            }
+            else
+            {
+                Genomes = genomes;
+            }
         }
         #endregion
 

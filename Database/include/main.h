@@ -26,7 +26,7 @@ extern "C"
     int ResetTables();
     int AddModel(const char *, int, float);
     Model *GetModel(int);
-    ModelCollection *GetBestModels(int, int);
+    ModelCollection *GetBestModelsCollection(int, int);
     int TrimModelsTable(int, int);
     void UnloadCollection(ModelCollection *);
     void UnloadModel(Model *);

@@ -76,19 +76,6 @@ public class GenomeCar : GenomeProxy
 
     public void SaveGenome()
     {
-        // var dir = GenomeSaver.DefaultSaveDir + "SavedGenomes\\";
-        // if (!System.IO.Directory.Exists(dir))
-        //     System.IO.Directory.CreateDirectory(dir);
-
-        // var filePath = GenomeSaver.GenerateSaveFilePath(
-        //     dir, GenomeProperty.Fitness, populationCar.Popl.Generation
-        // );
-
-        // GenomeSaver.SaveGenome(
-        //     GenomeProperty,
-        //     filePath
-        // );
-
         Database.AddModel(new PackedGenome(GenomeProperty), Main.Instance.selectedExtensionId, carController.Fitness);
     }
     #endregion

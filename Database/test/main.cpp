@@ -102,7 +102,7 @@ TEST_F(DataBasedTest, FetchesBestModel)
     AddModel("test7", 1, 25.2);
     AddModel("test8", 1, 1.5);
 
-    ModelCollection *collection = GetBestModels(5, 1);
+    ModelCollection *collection = GetBestModelsCollection(5, 1);
     ASSERT_NE(nullptr, collection);
     ASSERT_FLOAT_EQ(25.2, collection->models[0]->fitness);
     ASSERT_FLOAT_EQ(10.3, collection->models[1]->fitness);
@@ -124,7 +124,7 @@ TEST_F(DataBasedTest, FetchesAllModels)
     AddModel("test7", 1, 25.2);
     AddModel("test8", 1, 1.5);
 
-    ModelCollection *collection = GetBestModels(-1, 1);
+    ModelCollection *collection = GetBestModelsCollection(-1, 1);
     ASSERT_NE(nullptr, collection);
     ASSERT_EQ(6, collection->size);
 
@@ -143,7 +143,7 @@ TEST_F(DataBasedTest, KeepsOnlyMostFitModels)
     AddModel("test8", 1, 1.5);
 
     ASSERT_EQ(SQLITE_OK, TrimModelsTable(3, 1));
-    ModelCollection *collection = GetBestModels(-1, 1);
+    ModelCollection *collection = GetBestModelsCollection(-1, 1);
     ASSERT_EQ(3, collection->size);
 
     UnloadCollection(collection);

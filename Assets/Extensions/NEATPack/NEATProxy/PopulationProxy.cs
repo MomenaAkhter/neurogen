@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using NeuroGen;
+using System.Collections.Generic;
 
 namespace NEAT
 {
@@ -43,11 +44,27 @@ namespace NEAT
         #region Public methods
         public virtual void InitPopl()
         {
+            // Get genomes of best fit models
+            List<Model> models = Database.GetBestModels(5, Main.Instance.selectedExtensionId);
+            List<Genome> genomes = new List<Genome>();
+            foreach (var model in models)
+            {
+                // Deserialize JSON to get PackedGenome
+                var packedGenome = JsonUtility.FromJson<PackedGenome>(model.content);
+                genomes.Add(new Genome(config, packedGenome));
+            }
+
+            // Fill in the empty space in the genomes list
+            int emptySlots = Config.genomeCount - genomes.Count;
+            for (int i = 0; i < emptySlots; i++)
+                genomes.Add(new Genome(Config.inputCount, Config.outputCount, Config.weightInitRandomValue));
+
             Popl = new Population(
                 genomeCount: Config.genomeCount,
                 inCount: Config.inputCount,
                 outCount: Config.outputCount,
-                config: config
+                config: config,
+                genomes
             );
         }
 

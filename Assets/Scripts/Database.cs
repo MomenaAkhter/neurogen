@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NeuroGen
@@ -87,7 +88,7 @@ namespace NeuroGen
 #else
         [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        public static extern IntPtr GetBestModels(int count, int extensionId);
+        private static extern IntPtr GetBestModelsCollection(int count, int extensionId);
 
 #if UNITY_IPHONE
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
@@ -95,5 +96,24 @@ namespace NeuroGen
         [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
 #endif
         public static extern int GetExtensionId(string name);
+
+        public static List<Model> GetBestModels(int count, int extensionId)
+        {
+            IntPtr collectionPtr = Database.GetBestModelsCollection(5, extensionId);
+            ModelCollection collection = Marshal.PtrToStructure<ModelCollection>(collectionPtr);
+
+            List<Model> models = new List<Model>();
+            if (collection.size > 0)
+            {
+                IntPtr[] modelPointers = new IntPtr[collection.size];
+                Marshal.Copy(collection.models, modelPointers, 0, collection.size);
+
+                for (int i = 0; i < collection.size; i++)
+                    models.Add(Marshal.PtrToStructure<Model>(modelPointers[i]));
+            }
+            Database.UnloadCollection(collectionPtr);
+
+            return models;
+        }
     }
 }
