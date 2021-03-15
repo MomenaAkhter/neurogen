@@ -142,13 +142,11 @@ TEST_F(DataBasedTest, KeepsOnlyMostFitModels)
     AddModel("test7", 1, 25.2);
     AddModel("test8", 1, 1.5);
 
-    ModelCollection *collection = GetBestModels(3, 1);
-    ASSERT_EQ(SQLITE_OK, TrimModelsTable(collection, 1));
-    ModelCollection *collection2 = GetBestModels(-1, 1);
-    ASSERT_EQ(3, collection2->size);
+    ASSERT_EQ(SQLITE_OK, TrimModelsTable(3, 1));
+    ModelCollection *collection = GetBestModels(-1, 1);
+    ASSERT_EQ(3, collection->size);
 
     UnloadCollection(collection);
-    UnloadCollection(collection2);
 }
 
 int main()

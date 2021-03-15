@@ -28,12 +28,6 @@ namespace NeuroGen
             defaultTrackSystemInfo.gameObject.SetActive(true);
 
             Database.ConnectAndSetup(Application.persistentDataPath + "/db.sqlite");
-            // Database.AddModel("Fuck", "neat-pack", 5.6f);
-            // IntPtr modelPtr = Database.GetModel(1);
-            // Model model = (Model)Marshal.PtrToStructure(modelPtr, typeof(Model));
-            // Debug.Log(model.content);
-            // Debug.Log(model.fitness);
-            // Database.DeleteModel(modelPtr);
 
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
             {

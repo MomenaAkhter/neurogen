@@ -12,6 +12,13 @@ namespace NeuroGen
         public float fitness;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ModelCollection
+    {
+        public IntPtr models;
+        public int size;
+    }
+
     public class Database
     {
 #if UNITY_IPHONE
@@ -59,7 +66,28 @@ namespace NeuroGen
 #else
         [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        public static extern void DeleteModel(IntPtr model);
+        public static extern void UnloadModel(IntPtr model);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        public static extern void UnloadCollection(IntPtr model);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        public static extern int TrimModelsTable(int count, int extensionId);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        public static extern IntPtr GetBestModels(int count, int extensionId);
 
 #if UNITY_IPHONE
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]

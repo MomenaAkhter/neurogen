@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Linq;
 using NEAT;
@@ -60,6 +62,22 @@ public class PopulationCar : PopulationProxy
 
     public override void Evolve()
     {
+        int extensionId = Main.Instance.selectedExtensionId;
+
+        // Get fitness values of best fit models
+        IntPtr collectionPtr = Database.GetBestModels(5, extensionId);
+        ModelCollection collection = Marshal.PtrToStructure<ModelCollection>(collectionPtr);
+
+        float topModelsFitnessMinValue = 0;
+        if (collection.size > 0)
+        {
+            IntPtr[] modelPointers = new IntPtr[collection.size];
+            Marshal.Copy(collection.models, modelPointers, 0, collection.size);
+
+            topModelsFitnessMinValue = Marshal.PtrToStructure<Model>(modelPointers[collection.size - 1]).fitness;
+        }
+        Database.UnloadCollection(collectionPtr);
+
         // Display fitness values of the entire population
         string text = "Population fitnesses: ";
 
@@ -69,7 +87,8 @@ public class PopulationCar : PopulationProxy
             fitnessValues.Add(car.GenomeProperty.Fitness);
 
             // Save genome
-            car.SaveGenome();
+            if (car.GenomeProperty.Fitness > topModelsFitnessMinValue)
+                car.SaveGenome();
         }
 
         fitnessValues.Sort((x, y) => -x.CompareTo(y));
@@ -78,6 +97,10 @@ public class PopulationCar : PopulationProxy
             text += fitnessValue + " ";
         Debug.Log(text);
 
+        // Trim the models table for the current extension
+        Database.TrimModelsTable(5, extensionId);
+
+        // Evolution
         base.Evolve();
 
         ReinitCars();

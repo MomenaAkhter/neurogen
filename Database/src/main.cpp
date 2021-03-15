@@ -148,12 +148,12 @@ extern "C"
         return nullptr;
     }
 
-    int TrimModelsTable(ModelCollection *collection, int extension_id)
+    int TrimModelsTable(int count, int extension_id)
     {
         sqlite3_stmt *statement;
 
-        if (sqlite3_prepare(handle, "DELETE FROM models WHERE fitness < ?", -1, &statement, NULL) == SQLITE_OK)
-            if (sqlite3_bind_double(statement, 1, (double)collection->models[collection->size - 1]->fitness) == SQLITE_OK && sqlite3_step(statement) == SQLITE_DONE)
+        if (sqlite3_prepare(handle, "DELETE FROM models WHERE extension_id = ? AND id NOT IN (SELECT id FROM models WHERE extension_id = ? ORDER BY fitness DESC LIMIT ?)", -1, &statement, NULL) == SQLITE_OK)
+            if (sqlite3_bind_int(statement, 1, extension_id) == SQLITE_OK && sqlite3_bind_int(statement, 2, extension_id) == SQLITE_OK && sqlite3_bind_int(statement, 3, count) == SQLITE_OK && sqlite3_step(statement) == SQLITE_DONE)
                 return sqlite3_finalize(statement);
 
         return SQLITE_ERROR;
