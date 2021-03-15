@@ -9,6 +9,7 @@ namespace NeuroGen
         public int genomeCount;
         public int inputCount;
         public int outputCount;
+        public int bestModelsCount;
         public GameObject carPrefab;
         public GameObject[] extensions;
         public GameObject defaultCamera;

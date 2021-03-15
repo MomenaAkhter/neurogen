@@ -65,7 +65,7 @@ public class PopulationCar : PopulationProxy
         int extensionId = Main.Instance.selectedExtensionId;
 
         // Get fitness values of best fit models
-        List<Model> models = Database.GetBestModels(5, extensionId);
+        List<Model> models = Database.GetBestModels(Main.Instance.bestModelsCount, extensionId);
         float topModelsFitnessMinValue = 0;
         if (models.Count > 0)
             topModelsFitnessMinValue = models[models.Count - 1].fitness;
@@ -90,7 +90,7 @@ public class PopulationCar : PopulationProxy
         Debug.Log(text);
 
         // Trim the models table for the current extension
-        Database.TrimModelsTable(5, extensionId);
+        Database.TrimModelsTable(Main.Instance.bestModelsCount, extensionId);
 
         // Evolution
         base.Evolve();

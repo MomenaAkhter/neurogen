@@ -99,7 +99,7 @@ namespace NeuroGen
 
         public static List<Model> GetBestModels(int count, int extensionId)
         {
-            IntPtr collectionPtr = Database.GetBestModelsCollection(5, extensionId);
+            IntPtr collectionPtr = Database.GetBestModelsCollection(count, extensionId);
             ModelCollection collection = Marshal.PtrToStructure<ModelCollection>(collectionPtr);
 
             List<Model> models = new List<Model>();

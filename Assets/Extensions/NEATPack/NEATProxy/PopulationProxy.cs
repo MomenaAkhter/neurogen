@@ -45,7 +45,7 @@ namespace NEAT
         public virtual void InitPopl()
         {
             // Get genomes of best fit models
-            List<Model> models = Database.GetBestModels(5, Main.Instance.selectedExtensionId);
+            List<Model> models = Database.GetBestModels(Main.Instance.bestModelsCount, Main.Instance.selectedExtensionId);
             List<Genome> genomes = new List<Genome>();
             foreach (var model in models)
             {
