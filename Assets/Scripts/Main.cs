@@ -4,15 +4,30 @@ using CaseExtensions;
 
 namespace NeuroGen
 {
+    public enum StartMode
+    {
+        RandomModels,
+        BestModels
+    }
+    public enum Status
+    {
+        Running,
+        Paused,
+        Stopped
+    }
     public class Main : MonoBehaviour
     {
         public int genomeCount;
         public int inputCount;
         public int outputCount;
         public int bestModelsCount;
+        public StartMode startMode = StartMode.RandomModels;
+        public Status status = Status.Stopped;
         public GameObject carPrefab;
         public GameObject[] extensions;
         public GameObject defaultCamera;
+        public GameObject startMenu;
+        public HUD hud;
         public TrackSystemInfo defaultTrackSystemInfo;
         public int selectedExtensionIndex;
         public int selectedExtensionId;
@@ -24,18 +39,11 @@ namespace NeuroGen
         void Start()
         {
             instance = this;
-            Time.timeScale = timeScale;
+            hud.speedSlider.value = timeScale;
             defaultCamera.SetActive(true);
             defaultTrackSystemInfo.gameObject.SetActive(true);
 
             Database.ConnectAndSetup(Application.persistentDataPath + "/db.sqlite");
-
-            if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
-            {
-                var extensionMainObject = extensions[selectedExtensionIndex];
-                selectedExtensionId = Database.GetExtensionId(extensionMainObject.name.ToKebabCase());
-                extensionMainObject.SetActive(true);
-            }
 
             // int count = 1;
             // cars = new CarController[count];
@@ -48,6 +56,22 @@ namespace NeuroGen
             // cars[0].humanControlled = true;
         }
 
+        void ActivateExtension()
+        {
+            if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
+            {
+                var extensionMainObject = extensions[selectedExtensionIndex];
+                selectedExtensionId = Database.GetExtensionId(extensionMainObject.name.ToKebabCase());
+                extensionMainObject.SetActive(true);
+            }
+        }
+
+        void FixedUpdate()
+        {
+            Time.timeScale = hud.speedSlider.value;
+            hud.speedSliderValue.text = Time.timeScale.ToString("0");
+        }
+
         // private void FixedUpdate()
         // {
         //     cars[0].Step(null);
@@ -58,12 +82,32 @@ namespace NeuroGen
         //     Debug.Log(text);
         // }
 
+        public void StartWithRandomModels()
+        {
+            StartSimulation(StartMode.RandomModels);
+        }
+        public void StartWithBestModels()
+        {
+            StartSimulation(StartMode.BestModels);
+        }
+
+        public void StartSimulation(StartMode startMode)
+        {
+            this.startMode = startMode;
+            startMenu.SetActive(false);
+            ActivateExtension();
+            status = Status.Running;
+        }
+
         void OnGUI()
         {
-            timeScale = GUI.HorizontalSlider(new Rect(10, 10, 350, 30), timeScale, 1, 100);
+            // if (status == Status.Running)
+            // {
+            //     timeScale = GUI.HorizontalSlider(new Rect(10, 10, 350, 30), timeScale, 1, 100);
 
-            Time.timeScale = timeScale;
-            speedText.text = timeScale.ToString("Speed: 0");
+            //     Time.timeScale = timeScale;
+            //     speedText.text = timeScale.ToString("Speed: 0");
+            // }
         }
     }
 }
