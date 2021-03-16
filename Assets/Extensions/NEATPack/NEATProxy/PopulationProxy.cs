@@ -44,20 +44,25 @@ namespace NEAT
         #region Public methods
         public virtual void InitPopl()
         {
-            // Get genomes of best fit models
-            List<Model> models = Database.GetBestModels(Main.Instance.bestModelsCount, Main.Instance.selectedExtensionId);
-            List<Genome> genomes = new List<Genome>();
-            foreach (var model in models)
+            List<Genome> genomes = null;
+            if (Main.Instance.startMode == StartMode.BestModels)
             {
-                // Deserialize JSON to get PackedGenome
-                var packedGenome = JsonUtility.FromJson<PackedGenome>(model.content);
-                genomes.Add(new Genome(config, packedGenome));
-            }
+                // Get genomes of best fit models
+                List<Model> models = Database.GetBestModels(Main.Instance.bestModelsCount, Main.Instance.selectedExtensionId);
+                genomes = new List<Genome>();
 
-            // Fill in the empty space in the genomes list
-            int emptySlots = Config.genomeCount - genomes.Count;
-            for (int i = 0; i < emptySlots; i++)
-                genomes.Add(new Genome(Config.inputCount, Config.outputCount, Config.weightInitRandomValue));
+                foreach (var model in models)
+                {
+                    // Deserialize JSON to get PackedGenome
+                    var packedGenome = JsonUtility.FromJson<PackedGenome>(model.content);
+                    genomes.Add(new Genome(config, packedGenome));
+                }
+
+                // Fill in the empty spaces of the genomes list
+                int emptySlots = Config.genomeCount - genomes.Count;
+                for (int i = 0; i < emptySlots; i++)
+                    genomes.Add(new Genome(Config.inputCount, Config.outputCount, Config.weightInitRandomValue));
+            }
 
             Popl = new Population(
                 genomeCount: Config.genomeCount,

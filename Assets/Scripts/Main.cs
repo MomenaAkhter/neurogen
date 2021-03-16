@@ -97,6 +97,8 @@ namespace NeuroGen
             startMenu.SetActive(false);
             ActivateExtension();
             status = Status.Running;
+            hud.gameObject.SetActive(true);
+            startMenu.SetActive(false);
         }
 
         void OnGUI()
