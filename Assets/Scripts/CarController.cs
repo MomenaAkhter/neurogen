@@ -140,7 +140,9 @@ namespace NeuroGen
                 }
 
                 // Fitness text
-                fitnessText.text = distanceTravelled.ToString("0.00");
+                fitnessText.text = Fitness.ToString("0.00");
+                if (Fitness > Main.Instance.highestFitness)
+                    Main.Instance.highestFitness = Fitness;
             }
         }
 
@@ -157,12 +159,15 @@ namespace NeuroGen
             isRunning = true;
             gameObject.SetActive(true);
             idleTime = 0;
+
+            Main.Instance.survivors++;
         }
 
         public void Stop()
         {
             isRunning = false;
             gameObject.SetActive(false);
+            Main.Instance.survivors--;
         }
     }
 }

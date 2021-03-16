@@ -36,6 +36,8 @@ namespace NeuroGen
         public Text speedText;
         private static Main instance = null;
         public static Main Instance { get { return instance; } }
+        public int survivors;
+        public float highestFitness;
         void Start()
         {
             instance = this;
@@ -62,6 +64,10 @@ namespace NeuroGen
             {
                 var extensionMainObject = extensions[selectedExtensionIndex];
                 selectedExtensionId = Database.GetExtensionId(extensionMainObject.name.ToKebabCase());
+
+                survivors = 0;
+                highestFitness = 0;
+
                 extensionMainObject.SetActive(true);
             }
         }
@@ -70,6 +76,8 @@ namespace NeuroGen
         {
             Time.timeScale = hud.speedSlider.value;
             hud.speedSliderValue.text = Time.timeScale.ToString("0");
+            hud.survivorsLabel.text = "Survivors: " + survivors + "/" + genomeCount;
+            hud.highestFitnessLabel.text = "Highest Fitness: " + highestFitness.ToString("0");
         }
 
         // private void FixedUpdate()
@@ -101,15 +109,9 @@ namespace NeuroGen
             startMenu.SetActive(false);
         }
 
-        void OnGUI()
+        public void Quit()
         {
-            // if (status == Status.Running)
-            // {
-            //     timeScale = GUI.HorizontalSlider(new Rect(10, 10, 350, 30), timeScale, 1, 100);
-
-            //     Time.timeScale = timeScale;
-            //     speedText.text = timeScale.ToString("Speed: 0");
-            // }
+            Application.Quit();
         }
     }
 }
