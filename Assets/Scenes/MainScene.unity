@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 103121030}
   - component: {fileID: 103121029}
   m_Layer: 5
-  m_Name: BackToMenu
+  m_Name: Stop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 103121030}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983295361}
+        m_MethodName: StopSimulation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &103121030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,7 +566,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 341618174}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983295361}
+        m_MethodName: TogglePauseResume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &341618174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1158,7 +1180,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Back to Menu
+  m_Text: Stop
 --- !u!222 &881940364
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2664,6 +2686,7 @@ MonoBehaviour:
   speedSliderValue: {fileID: 752829653}
   survivorsLabel: {fileID: 1285995759}
   highestFitnessLabel: {fileID: 1365726985}
+  pauseResumeToggle: {fileID: 341618173}
 --- !u!1 &1702600142
 GameObject:
   m_ObjectHideFlags: 0

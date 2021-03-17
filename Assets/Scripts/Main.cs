@@ -58,7 +58,7 @@ namespace NeuroGen
             // cars[0].humanControlled = true;
         }
 
-        void ActivateExtension()
+        void ManageSelectedExtension(bool activate = true)
         {
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
             {
@@ -68,8 +68,17 @@ namespace NeuroGen
                 survivors = 0;
                 highestFitness = 0;
 
-                extensionMainObject.SetActive(true);
+                extensionMainObject.SetActive(activate);
+                status = activate ? Status.Running : Status.Stopped;
             }
+        }
+        void ActivateExtension()
+        {
+            ManageSelectedExtension(true);
+        }
+        void DeactivateExtension()
+        {
+            ManageSelectedExtension(false);
         }
 
         void FixedUpdate()
@@ -103,12 +112,32 @@ namespace NeuroGen
         {
             this.startMode = startMode;
             startMenu.SetActive(false);
+
             ActivateExtension();
-            status = Status.Running;
+
             hud.gameObject.SetActive(true);
-            startMenu.SetActive(false);
         }
 
+        public void StopSimulation()
+        {
+            DeactivateExtension();
+
+            hud.gameObject.SetActive(false);
+            startMenu.SetActive(true);
+        }
+        public void TogglePauseResume()
+        {
+            if (Time.timeScale > 0)
+            {
+                Time.timeScale = 0;
+                hud.pauseResumeToggle.GetComponentInChildren<Text>().text = "Resume";
+            }
+            else
+            {
+                Time.timeScale = hud.speedSlider.value;
+                hud.pauseResumeToggle.GetComponentInChildren<Text>().text = "Pause";
+            }
+        }
         public void Quit()
         {
             Application.Quit();

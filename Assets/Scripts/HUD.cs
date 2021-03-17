@@ -10,5 +10,6 @@ namespace NeuroGen
         public Text speedSliderValue;
         public Text survivorsLabel;
         public Text highestFitnessLabel;
+        public Button pauseResumeToggle;
     }
 }
