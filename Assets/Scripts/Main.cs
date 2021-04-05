@@ -99,18 +99,21 @@ namespace NeuroGen
         //     Debug.Log(text);
         // }
 
-        public void StartWithRandomModels()
+        public void UpdateStartMode(Dropdown startModeDropdown)
         {
-            StartSimulation(StartMode.RandomModels);
-        }
-        public void StartWithBestModels()
-        {
-            StartSimulation(StartMode.BestModels);
+            switch (startModeDropdown.value)
+            {
+                case 0:
+                    startMode = StartMode.RandomModels;
+                    break;
+                default:
+                    startMode = StartMode.BestModels;
+                    break;
+            }
         }
 
-        public void StartSimulation(StartMode startMode)
+        public void StartSimulation()
         {
-            this.startMode = startMode;
             startMenu.SetActive(false);
 
             ActivateExtension();
