@@ -73,11 +73,6 @@ public class GenomeCar : GenomeProxy
     {
         carController.Stop();
     }
-
-    public void SaveGenome()
-    {
-        Database.AddModel(new PackedGenome(GenomeProperty), Main.Instance.selectedExtensionId, carController.Fitness);
-    }
     #endregion
 
     #region Private methods

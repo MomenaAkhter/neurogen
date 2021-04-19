@@ -8,112 +8,131 @@ namespace NeuroGen
     [StructLayout(LayoutKind.Sequential)]
     public struct Model
     {
-        public string content;
-        public int extension_id;
+        public string definition;
         public float fitness;
+
+        public Model(string definition, float fitness)
+        {
+            this.definition = definition;
+            this.fitness = fitness;
+        }
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ModelCollection
+    struct RawModel
     {
-        public IntPtr models;
-        public int size;
+        public IntPtr definition;
+        public float fitness;
     }
 
     public class Database
     {
-#if UNITY_IPHONE
-        [DllImport("__Internal")]
-#else
-        [DllImport("Database")]
-#endif
-        public static extern int GetSqliteVersion();
+        private static string path;
+        private static IntPtr models;
 
 #if UNITY_IPHONE
         [DllImport("__Internal")]
 #else
-        [DllImport("Database")]
+        [DllImport("persistent_models")]
 #endif
-        public static extern int ConnectAndSetup(string path);
+        private static extern IntPtr pm_load_definition(string path);
 
 #if UNITY_IPHONE
-        [DllImport("__Internal")]
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
 #else
-        [DllImport("Database")]
+        [DllImport("persistent_models", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        public static extern int Disconnect();
+        private static extern int pm_count(out IntPtr models);
 
 #if UNITY_IPHONE
-        [DllImport("__Internal")]
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
 #else
-        [DllImport("Database")]
+        [DllImport("persistent_models", CallingConvention = CallingConvention.Cdecl)]
 #endif
-        public static extern int AddModel(string content, int extensionId, float fitness);
+        private static extern RawModel pm_get_model(out IntPtr models, int index);
 
-        public static void AddModel(object model, int extensionId, float fitness)
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("persistent_models", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void pm_free_string(IntPtr str);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("persistent_models", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void pm_free_models(out IntPtr models);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("persistent_models", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern IntPtr pm_load_file(string file_path);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("persistent_models", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void pm_save_file(out IntPtr models, string file_path);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("persistent_models", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void pm_add_to_stage(out IntPtr models, string definition, float fitness);
+
+#if UNITY_IPHONE
+        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+#else
+        [DllImport("persistent_models", CallingConvention = CallingConvention.Cdecl)]
+#endif
+        private static extern void pm_commit(out IntPtr models, int amount);
+
+        public static void LoadFile(string path)
         {
-            AddModel(JsonUtility.ToJson(model), extensionId, fitness);
+            Database.path = path;
+            models = pm_load_file(path);
         }
 
-#if UNITY_IPHONE
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        public static extern IntPtr GetModel(int id);
-
-#if UNITY_IPHONE
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        public static extern void UnloadModel(IntPtr model);
-
-#if UNITY_IPHONE
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        public static extern void UnloadCollection(IntPtr model);
-
-#if UNITY_IPHONE
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        public static extern int TrimModelsTable(int count, int extensionId);
-
-#if UNITY_IPHONE
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        private static extern IntPtr GetBestModelsCollection(int count, int extensionId);
-
-#if UNITY_IPHONE
-        [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
-#else
-        [DllImport("Database", CallingConvention = CallingConvention.Cdecl)]
-#endif
-        public static extern int GetExtensionId(string name);
-
-        public static List<Model> GetBestModels(int count, int extensionId)
+        public static void Close()
         {
-            IntPtr collectionPtr = Database.GetBestModelsCollection(count, extensionId);
-            ModelCollection collection = Marshal.PtrToStructure<ModelCollection>(collectionPtr);
+            pm_free_models(out models);
+        }
 
-            List<Model> models = new List<Model>();
-            if (collection.size > 0)
-            {
-                IntPtr[] modelPointers = new IntPtr[collection.size];
-                Marshal.Copy(collection.models, modelPointers, 0, collection.size);
+        public static int NumberOfEntries()
+        {
+            return pm_count(out models);
+        }
 
-                for (int i = 0; i < collection.size; i++)
-                    models.Add(Marshal.PtrToStructure<Model>(modelPointers[i]));
-            }
-            Database.UnloadCollection(collectionPtr);
+        public static Model GetModel(int index)
+        {
+            var rawModel = pm_get_model(out models, index);
 
-            return models;
+            var model = new Model(Marshal.PtrToStringAuto(rawModel.definition), rawModel.fitness
+            );
+
+            pm_free_string(rawModel.definition);
+
+            return model;
+        }
+
+        public static void Commit(int amount)
+        {
+            pm_commit(out models, amount);
+        }
+
+        public static void Stage(string definition, float fitness)
+        {
+            pm_add_to_stage(out models, definition, fitness);
+        }
+
+        public static void SaveFile()
+        {
+            pm_save_file(out models, path);
         }
     }
 }

@@ -62,16 +62,8 @@ public class PopulationCar : PopulationProxy
 
     public override void Evolve()
     {
-        int extensionId = Main.Instance.selectedExtensionId;
-
         // Sort the cars based on fitness in descending order
         cars.Sort((x, y) => -x.GenomeProperty.Fitness.CompareTo(y.GenomeProperty.Fitness));
-
-        // Get fitness values of best fit models
-        List<Model> models = Database.GetBestModels(Main.Instance.bestModelsCount, extensionId);
-        float topModelsFitnessMinValue = 0;
-        if (models.Count > 0)
-            topModelsFitnessMinValue = models[models.Count - 1].fitness;
 
         // Display fitness values of the entire population
         string text = "Population fitnesses: ";
@@ -79,14 +71,13 @@ public class PopulationCar : PopulationProxy
         {
             text += car.GenomeProperty.Fitness + " ";
 
-            // Save genome
-            if (car.GenomeProperty.Fitness > topModelsFitnessMinValue || models.Count < Main.Instance.bestModelsCount)
-                car.SaveGenome();
+            Database.Stage(JsonUtility.ToJson(new PackedGenome(car.GenomeProperty)), car.GenomeProperty.Fitness);
         }
         Debug.Log(text);
 
         // Trim the models table for the current extension
-        Database.TrimModelsTable(Main.Instance.bestModelsCount, extensionId);
+        Database.Commit(Configuration.Instance.saved_models_count);
+        Database.SaveFile();
 
         // Evolution
         base.Evolve();

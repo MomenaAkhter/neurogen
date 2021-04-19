@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using CaseExtensions;
+using System.IO;
 
 namespace NeuroGen
 {
@@ -17,7 +17,6 @@ namespace NeuroGen
     }
     public class Main : MonoBehaviour
     {
-        public int genomeCount;
         public int inputCount;
         public int outputCount;
         public int bestModelsCount;
@@ -30,32 +29,48 @@ namespace NeuroGen
         public HUD hud;
         public TrackSystemInfo defaultTrackSystemInfo;
         public int selectedExtensionIndex;
-        public int selectedExtensionId;
-        public float timeScale = 5;
+        public float timeScale;
         private CarController[] carControllers;
         public Text speedText;
         private static Main instance = null;
         public static Main Instance { get { return instance; } }
         public int survivors;
         public float highestFitness;
+
         void Start()
         {
             instance = this;
+
+            var arguments = System.Environment.GetCommandLineArgs();
+            if (arguments.Length == 2)
+            {
+                Debug.Log(arguments[1].Replace("\\\"", "\""));
+                Configuration.LoadJson(arguments[1].Replace("\\\"", "\""));
+            }
+            else
+            {
+                startMenu.SetActive(true);
+
+                // Create models file if it doesn't exist
+                if (!File.Exists(Configuration.Instance.models_file_path))
+                    using (StreamWriter sw = File.CreateText(Configuration.Instance.models_file_path))
+                        sw.WriteLine("{\"models\": []}");
+            }
+
+            Database.LoadFile(Configuration.Instance.models_file_path);
+
+            if (Configuration.Instance.start_from_saved_models)
+                startMode = StartMode.BestModels;
+            else
+                startMode = StartMode.RandomModels;
+
+            timeScale = Configuration.Instance.speed;
             hud.speedSlider.value = timeScale;
             defaultCamera.SetActive(true);
             defaultTrackSystemInfo.gameObject.SetActive(true);
 
-            Database.ConnectAndSetup(Application.persistentDataPath + "/db.sqlite");
-
-            // int count = 1;
-            // cars = new CarController[count];
-            // for (int i = 0; i < count; i++)
-            // {
-            //     cars[i] = Instantiate<CarController>(car);
-            //     cars[i].transform.SetPositionAndRotation(spawnPoint.transform.position, spawnPoint.transform.rotation);
-            // }
-
-            // cars[0].humanControlled = true;
+            if (arguments.Length == 2)
+                StartSimulation();
         }
 
         void ManageSelectedExtension(bool activate = true)
@@ -63,7 +78,6 @@ namespace NeuroGen
             if (selectedExtensionIndex >= 0 && selectedExtensionIndex < extensions.Length)
             {
                 var extensionMainObject = extensions[selectedExtensionIndex];
-                selectedExtensionId = Database.GetExtensionId(extensionMainObject.name.ToKebabCase());
 
                 survivors = 0;
                 highestFitness = 0;
@@ -85,19 +99,9 @@ namespace NeuroGen
         {
             Time.timeScale = hud.speedSlider.value;
             hud.speedSliderValue.text = Time.timeScale.ToString("0");
-            hud.survivorsLabel.text = "Survivors: " + survivors + "/" + genomeCount;
+            hud.survivorsLabel.text = "Survivors: " + survivors + "/" + Configuration.Instance.population_size;
             hud.highestFitnessLabel.text = "Highest Fitness: " + highestFitness.ToString("0");
         }
-
-        // private void FixedUpdate()
-        // {
-        //     cars[0].Step(null);
-        //     var values = cars[0].SensorValues;
-        //     string text = "";
-        //     foreach (var value in values)
-        //         text += value + " ";
-        //     Debug.Log(text);
-        // }
 
         public void UpdateStartMode(Dropdown startModeDropdown)
         {
