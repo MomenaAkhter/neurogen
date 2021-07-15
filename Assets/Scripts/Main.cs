@@ -24,7 +24,8 @@ namespace NeuroGen
         public Status status = Status.Stopped;
         public GameObject carPrefab;
         public GameObject[] extensions;
-        public GameObject defaultCamera;
+        public GameObject topDownCamera;
+        public GameObject thirdPersonCamera;
         public GameObject startMenu;
         public HUD hud;
         public TrackSystemInfo defaultTrackSystemInfo;
@@ -39,12 +40,15 @@ namespace NeuroGen
 
         void Start()
         {
+            // Prepare log file
+            if (!File.Exists(Application.persistentDataPath + "/log.txt"))
+                File.CreateText(Application.persistentDataPath + "/log.txt");
+
             instance = this;
 
             var arguments = System.Environment.GetCommandLineArgs();
             if (arguments.Length == 2)
             {
-                Debug.Log(arguments[1].Replace("\\\"", "\""));
                 Configuration.LoadJson(arguments[1].Replace("\\\"", "\""));
             }
             else
@@ -64,9 +68,13 @@ namespace NeuroGen
             else
                 startMode = StartMode.RandomModels;
 
+            if (Configuration.Instance.top_down_mode)
+                topDownCamera.SetActive(true);
+            else
+                thirdPersonCamera.SetActive(true);
+
             timeScale = Configuration.Instance.speed;
             hud.speedSlider.value = timeScale;
-            defaultCamera.SetActive(true);
             defaultTrackSystemInfo.gameObject.SetActive(true);
 
             if (arguments.Length == 2)

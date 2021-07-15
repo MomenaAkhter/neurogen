@@ -4934,7 +4934,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06171ba5387164c189f14b72349473a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  genomeCount: 50
   inputCount: 10
   outputCount: 2
   bestModelsCount: 10
@@ -4946,7 +4945,8 @@ MonoBehaviour:
   - {fileID: 1189165191}
   - {fileID: 1246592497}
   - {fileID: 431017402}
-  defaultCamera: {fileID: 963194225}
+  topDownCamera: {fileID: 963194225}
+  thirdPersonCamera: {fileID: 1702600142}
   startMenu: {fileID: 1863475444}
   hud: {fileID: 1652469119}
   defaultTrackSystemInfo: {fileID: 150119094}

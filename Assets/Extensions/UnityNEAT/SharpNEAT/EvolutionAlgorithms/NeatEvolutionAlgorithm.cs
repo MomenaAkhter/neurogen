@@ -692,8 +692,6 @@ namespace SharpNeat.EvolutionAlgorithms
                 }
             }
 
-            // Debug.Log("Updated champ! " + bestGenome.Id + " " + bestGenome.EvaluationInfo.Fitness);
-
             _currentBestGenome = bestGenome;
             _bestSpecieIdx = bestSpecieIdx;
 

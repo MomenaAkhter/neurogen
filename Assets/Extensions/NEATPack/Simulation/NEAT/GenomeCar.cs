@@ -6,6 +6,7 @@ using NeuroGen;
 public class GenomeCar : GenomeProxy
 {
     #region Fields
+    public string json = "";
     private NeuroGen.CarController carController = null;
     public SpriteRenderer speciesColor;
 
@@ -54,6 +55,8 @@ public class GenomeCar : GenomeProxy
     #region Public Methods
     public void Reinit(Transform targetPositionRotation)
     {
+        json = JsonUtility.ToJson(new PackedGenome(GenomeProperty));
+
         carController.Reinit();
         transform.SetPositionAndRotation(
             targetPositionRotation.position,

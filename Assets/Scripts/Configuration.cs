@@ -9,7 +9,7 @@ namespace NeuroGen
         public int saved_models_count = 10;
         public float speed = 1;
         public bool start_from_saved_models = true;
-
+        public bool top_down_mode = true;
         private static Configuration instance = null;
         public static Configuration Instance
         {

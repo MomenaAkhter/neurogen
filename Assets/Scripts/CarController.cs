@@ -51,9 +51,6 @@ namespace NeuroGen
 
                 sensorValues[9] = transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity).z;
 
-                // for (int i = 0; i < sensors.Length; i++)
-                //     sensors[i] = 1 - sensors[i];
-
                 return sensorValues;
             }
         }

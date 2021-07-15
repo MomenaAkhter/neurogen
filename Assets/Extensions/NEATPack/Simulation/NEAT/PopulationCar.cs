@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
+using System.IO;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Linq;
 using NEAT;
@@ -74,6 +72,9 @@ public class PopulationCar : PopulationProxy
             Database.Stage(JsonUtility.ToJson(new PackedGenome(car.GenomeProperty)), car.GenomeProperty.Fitness);
         }
         Debug.Log(text);
+
+        using (StreamWriter sw = File.AppendText(Application.persistentDataPath + "/log.txt"))
+            sw.WriteLine(text);
 
         // Trim the models table for the current extension
         Database.Commit(Configuration.Instance.saved_models_count);
